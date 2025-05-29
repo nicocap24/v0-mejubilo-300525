@@ -1,73 +1,72 @@
-import Link from "next/link"
-import { Logo } from "./logo"
-
-export default function Footer() {
+export function Footer() {
   return (
-    <footer className="text-gray-600 py-12 relative z-10">
-      <div className="container px-4 md:px-6 mx-auto">
+    <footer className="bg-gray-800 text-white py-12">
+      <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-            <Logo />
-            <p className="mt-4 text-gray-600">
-              Ayudamos a los chilenos a optimizar sus pensiones y prepararse mejor para el futuro.
-            </p>
+          {/* Logo and Description */}
+          <div className="col-span-1 md:col-span-2">
+            <div className="mb-4">
+              <span className="text-2xl font-bold">
+                <span className="text-white">Me</span>
+                <span className="text-orange-500">Jubilo</span>
+              </span>
+            </div>
+            <p className="text-gray-300 mb-4">Tu fuente de información previsional 100% clara y transparente</p>
           </div>
+
+          {/* Quick Links */}
           <div>
-            <h4 className="font-bold mb-4 text-gray-800">Enlaces rápidos</h4>
+            <h3 className="text-lg font-semibold mb-4">Enlaces Rápidos</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/" className="text-gray-600 hover:text-orange-500">
-                  Home
-                </Link>
+                <a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Acerca de
+                </a>
               </li>
               <li>
-                <Link href="/el-problema" className="text-gray-600 hover:text-orange-500">
-                  El Problema
-                </Link>
+                <a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Cómo funciona
+                </a>
               </li>
               <li>
-                <Link href="/herramientas" className="text-gray-600 hover:text-orange-500">
-                  Herramientas
-                </Link>
+                <a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Preguntas frecuentes
+                </a>
               </li>
               <li>
-                <Link href="/leaderboard" className="text-gray-600 hover:text-orange-500">
-                  Leaderboard
-                </Link>
+                <a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Contacto
+                </a>
               </li>
             </ul>
           </div>
+
+          {/* Legal */}
           <div>
-            <h4 className="font-bold mb-4 text-gray-800">Legal</h4>
+            <h3 className="text-lg font-semibold mb-4">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/terms" className="text-gray-600 hover:text-orange-500">
-                  Términos de uso
-                </Link>
+                <a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Términos y condiciones
+                </a>
               </li>
               <li>
-                <Link href="/privacy" className="text-gray-600 hover:text-orange-500">
+                <a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">
                   Política de privacidad
-                </Link>
+                </a>
               </li>
               <li>
-                <Link href="/security" className="text-gray-600 hover:text-orange-500">
-                  Seguridad
-                </Link>
+                <a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Cookies
+                </a>
               </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-bold mb-4 text-gray-800">Contacto</h4>
-            <ul className="space-y-2">
-              <li className="text-gray-600">contacto@mejubilo.cl</li>
-              <li className="text-gray-600">+56 2 2123 4567</li>
-              <li className="text-gray-600">Santiago, Chile</li>
             </ul>
           </div>
         </div>
-        <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-600">
-          <p>© {new Date().getFullYear()} MeJubilo. Todos los derechos reservados.</p>
+
+        {/* Bottom Bar */}
+        <div className="border-t border-gray-700 mt-8 pt-8 text-center">
+          <p className="text-gray-400">© 2024 MeJubilo. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>
