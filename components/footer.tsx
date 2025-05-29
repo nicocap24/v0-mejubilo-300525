@@ -19,7 +19,7 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4">Enlaces Rápidos</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">
+                <a href="/acerca-de" className="text-gray-300 hover:text-orange-500 transition-colors">
                   Acerca de
                 </a>
               </li>
@@ -29,13 +29,18 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">
+                <a href="/preguntas-frecuentes" className="text-gray-300 hover:text-orange-500 transition-colors">
                   Preguntas frecuentes
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">
+                <a href="/contacto" className="text-gray-300 hover:text-orange-500 transition-colors">
                   Contacto
+                </a>
+              </li>
+              <li>
+                <a href="/supuestos" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Supuestos
                 </a>
               </li>
             </ul>
@@ -46,18 +51,13 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">
+                <a href="/terminos-y-condiciones" className="text-gray-300 hover:text-orange-500 transition-colors">
                   Términos y condiciones
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">
+                <a href="/politica-de-privacidad" className="text-gray-300 hover:text-orange-500 transition-colors">
                   Política de privacidad
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">
-                  Cookies
                 </a>
               </li>
             </ul>
