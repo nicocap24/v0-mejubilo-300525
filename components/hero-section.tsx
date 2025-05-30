@@ -15,16 +15,16 @@ export function HeroSection() {
       {/* Overlay for better text readability */}
       <div className="absolute inset-0 bg-white/10"></div>
 
-      {/* Main Content Card */}
-      <Card className="relative z-10 w-full max-w-lg mx-auto shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
-        <CardContent className="p-8 text-center">
+      {/* Main Content Card - Increased size by 50%+ */}
+      <Card className="relative z-10 w-full max-w-4xl mx-auto shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
+        <CardContent className="p-12 md:p-16 text-center">
           {/* Main Heading */}
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 leading-tight">
+          <h1 className="text-5xl md:text-7xl font-bold text-gray-800 mb-8 leading-tight">
             ¿Ya quieres <span className="text-orange-500">jubilar</span>?
           </h1>
 
           {/* Subtitle */}
-          <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+          <p className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed max-w-3xl mx-auto">
             Descubre cuánto $$ podrías obtener con la reforma si jubilarás hoy👇:
           </p>
 
@@ -32,7 +32,7 @@ export function HeroSection() {
           <Link href="/evaluar">
             <Button
               size="lg"
-              className="bg-red-500 hover:bg-red-600 text-white px-12 py-4 text-lg rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              className="bg-red-500 hover:bg-red-600 text-white px-16 py-6 text-xl md:text-2xl rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
             >
               Descubre cómo
             </Button>

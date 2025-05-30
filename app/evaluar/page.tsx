@@ -73,14 +73,22 @@ export default function EvaluationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-green-50 to-yellow-50 py-12">
-      <div className="container mx-auto px-4">
-        <Link href="/" className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6">
+    <div
+      className="min-h-screen bg-cover bg-center bg-no-repeat py-12"
+      style={{
+        backgroundImage: "url('/images/landscape-background.png')",
+      }}
+    >
+      {/* Overlay for better text readability */}
+      <div className="absolute inset-0 bg-white/20"></div>
+
+      <div className="relative z-10 container mx-auto px-4">
+        <Link href="/" className="inline-flex items-center text-gray-700 hover:text-gray-900 mb-6">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Volver al inicio
         </Link>
 
-        <Card className="w-full max-w-md mx-auto">
+        <Card className="w-full max-w-md mx-auto bg-white/95 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-center text-2xl font-bold text-gray-800">Evaluación Gratuita</CardTitle>
           </CardHeader>
