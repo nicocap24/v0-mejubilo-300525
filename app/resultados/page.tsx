@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Check } from "lucide-react"
 import Link from "next/link"
 import { useMemo, useState } from "react"
-import { saveToGoogleSheets } from "@/lib/save-to-sheets"
 import { toast } from "sonner"
 
 export default function ResultsPage() {
@@ -109,18 +108,29 @@ export default function ResultsPage() {
     setIsSaving(true)
     try {
       const dataToSave = {
-        ...formData,
-        ...results,
+        FECHA: new Date().toISOString().split("T")[0], // Current date in YYYY-MM-DD format
+        AFP: "No especificado", // We don't have AFP data in results page
+        FONDO: "No especificado", // We don't have fund data in results page
+        SALDO: formData.saldoAFP,
+        FECHANACIMIENTO: formData.fechaNacimiento,
+        NOMBRE: formData.nombre,
+        EMAIL: "No especificado", // We don't have email in results page
       }
 
-      const result = await saveToGoogleSheets(dataToSave)
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSave),
+      })
 
-      if (result.success) {
-        setDataSaved(true)
-        toast.success("Datos guardados correctamente")
-      } else {
-        toast.error("Error al guardar los datos: " + (result.error || "Error desconocido"))
+      if (!response.ok) {
+        throw new Error("Failed to save data")
       }
+
+      setDataSaved(true)
+      toast.success("Datos guardados correctamente")
     } catch (error) {
       console.error("Error saving data:", error)
       toast.error("Error al guardar los datos")

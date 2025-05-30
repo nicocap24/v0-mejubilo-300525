@@ -10,26 +10,59 @@ import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { toast } from "sonner"
 
 export default function EvaluationPage() {
   const router = useRouter()
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
     nombre: "",
     saldoAFP: "",
     fechaNacimiento: "",
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsSubmitting(true)
 
-    // Encode the form data to pass as URL parameters
-    const params = new URLSearchParams({
-      nombre: formData.nombre,
-      saldoAFP: formData.saldoAFP,
-      fechaNacimiento: formData.fechaNacimiento,
-    }).toString()
+    try {
+      // First, save data to Google Sheets
+      const dataToSave = {
+        FECHA: new Date().toISOString().split("T")[0], // Current date in YYYY-MM-DD format
+        AFP: "No especificado", // We don't collect AFP in this form
+        FONDO: "No especificado", // We don't collect fund type in this form
+        SALDO: formData.saldoAFP,
+        FECHANACIMIENTO: formData.fechaNacimiento,
+        NOMBRE: formData.nombre,
+        EMAIL: "No especificado", // We don't collect email in this form
+      }
 
-    router.push(`/resultados?${params}`)
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSave),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to save data to Google Sheets")
+      }
+
+      // If successful, redirect to results page
+      const params = new URLSearchParams({
+        nombre: formData.nombre,
+        saldoAFP: formData.saldoAFP,
+        fechaNacimiento: formData.fechaNacimiento,
+      }).toString()
+
+      router.push(`/resultados?${params}`)
+    } catch (error) {
+      console.error("Error saving data:", error)
+      toast.error("Error al guardar los datos. Por favor, intenta nuevamente.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleInputChange = (field: string, value: string) => {
@@ -94,8 +127,15 @@ export default function EvaluationPage() {
                     Cancelar
                   </Button>
                 </Link>
-                <Button type="submit" className="flex-1 bg-red-500 hover:bg-red-600 text-white">
-                  Calcular
+                <Button type="submit" disabled={isSubmitting} className="flex-1 bg-red-500 hover:bg-red-600 text-white">
+                  {isSubmitting ? (
+                    <>
+                      <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></span>
+                      Calculando...
+                    </>
+                  ) : (
+                    "Calcular"
+                  )}
                 </Button>
               </div>
             </form>
