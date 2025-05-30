@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { ArrowLeft, Mail, Phone, MapPin, Send } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
@@ -16,8 +15,10 @@ export default function ContactoPage() {
   const [formData, setFormData] = useState({
     nombre: "",
     email: "",
-    asunto: "",
-    mensaje: "",
+    afp: "",
+    fondo: "",
+    saldo: "",
+    fechaNacimiento: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -33,20 +34,42 @@ export default function ContactoPage() {
     setIsSubmitting(true)
 
     try {
-      // Simulate form submission (replace with actual API call)
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const dataToSend = {
+        FECHA: new Date().toISOString().split("T")[0], // Current date in YYYY-MM-DD format
+        AFP: formData.afp,
+        FONDO: formData.fondo,
+        SALDO: formData.saldo,
+        FECHANACIMIENTO: formData.fechaNacimiento,
+        NOMBRE: formData.nombre,
+        EMAIL: formData.email,
+      }
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to submit form")
+      }
 
       // Reset form
       setFormData({
         nombre: "",
         email: "",
-        asunto: "",
-        mensaje: "",
+        afp: "",
+        fondo: "",
+        saldo: "",
+        fechaNacimiento: "",
       })
 
-      toast.success("Mensaje enviado correctamente. Te responderemos pronto.")
+      toast.success("Datos enviados correctamente. Te contactaremos pronto.")
     } catch (error) {
-      toast.error("Error al enviar el mensaje. Por favor, intenta nuevamente.")
+      console.error("Error submitting form:", error)
+      toast.error("Error al enviar los datos. Por favor, intenta nuevamente.")
     } finally {
       setIsSubmitting(false)
     }
@@ -137,8 +160,8 @@ export default function ContactoPage() {
           {/* Contact Form */}
           <Card className="bg-white/95 backdrop-blur-sm">
             <CardHeader>
-              <CardTitle className="text-2xl font-bold text-gray-800">Envíanos un Mensaje</CardTitle>
-              <p className="text-gray-600">Completa el formulario y te responderemos pronto.</p>
+              <CardTitle className="text-2xl font-bold text-gray-800">Datos para Evaluación</CardTitle>
+              <p className="text-gray-600">Completa tus datos para recibir una evaluación personalizada.</p>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -168,28 +191,69 @@ export default function ContactoPage() {
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="asunto">Asunto *</Label>
-                  <Input
-                    id="asunto"
-                    type="text"
-                    placeholder="¿En qué podemos ayudarte?"
-                    value={formData.asunto}
-                    onChange={(e) => handleInputChange("asunto", e.target.value)}
-                    required
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="afp">AFP *</Label>
+                    <select
+                      id="afp"
+                      value={formData.afp}
+                      onChange={(e) => handleInputChange("afp", e.target.value)}
+                      required
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <option value="">Selecciona tu AFP</option>
+                      <option value="Capital">Capital</option>
+                      <option value="Cuprum">Cuprum</option>
+                      <option value="Habitat">Habitat</option>
+                      <option value="PlanVital">PlanVital</option>
+                      <option value="ProVida">ProVida</option>
+                      <option value="Modelo">Modelo</option>
+                      <option value="Uno">Uno</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="fondo">Tipo de Fondo *</Label>
+                    <select
+                      id="fondo"
+                      value={formData.fondo}
+                      onChange={(e) => handleInputChange("fondo", e.target.value)}
+                      required
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <option value="">Selecciona el fondo</option>
+                      <option value="A">Fondo A (Más riesgoso)</option>
+                      <option value="B">Fondo B (Riesgoso)</option>
+                      <option value="C">Fondo C (Intermedio)</option>
+                      <option value="D">Fondo D (Conservador)</option>
+                      <option value="E">Fondo E (Más conservador)</option>
+                    </select>
+                  </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="mensaje">Mensaje *</Label>
-                  <Textarea
-                    id="mensaje"
-                    placeholder="Escribe tu mensaje aquí..."
-                    rows={6}
-                    value={formData.mensaje}
-                    onChange={(e) => handleInputChange("mensaje", e.target.value)}
-                    required
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="saldo">Saldo en AFP *</Label>
+                    <Input
+                      id="saldo"
+                      type="text"
+                      placeholder="Ej: $15.000.000"
+                      value={formData.saldo}
+                      onChange={(e) => handleInputChange("saldo", e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="fechaNacimiento">Fecha de nacimiento *</Label>
+                    <Input
+                      id="fechaNacimiento"
+                      type="date"
+                      value={formData.fechaNacimiento}
+                      onChange={(e) => handleInputChange("fechaNacimiento", e.target.value)}
+                      required
+                    />
+                  </div>
                 </div>
 
                 <div className="flex gap-3 pt-4">
@@ -211,7 +275,7 @@ export default function ContactoPage() {
                     ) : (
                       <>
                         <Send className="h-4 w-4 mr-2" />
-                        Enviar Mensaje
+                        Enviar Datos
                       </>
                     )}
                   </Button>
