@@ -29,9 +29,9 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* More Information */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Enlaces Rápidos</h3>
+            <h3 className="text-lg font-semibold mb-4">Más información</h3>
             <ul className="space-y-2">
               <li>
                 <a href="/acerca-de" className="text-gray-300 hover:text-orange-500 transition-colors">
@@ -51,6 +51,16 @@ export function Footer() {
               <li>
                 <a href="/supuestos" className="text-gray-300 hover:text-orange-500 transition-colors">
                   Supuestos
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/nicocap24/v0-mejubilo-300525"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-orange-500 transition-colors"
+                >
+                  Docs
                 </a>
               </li>
             </ul>
