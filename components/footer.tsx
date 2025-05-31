@@ -2,7 +2,7 @@ export function Footer() {
   return (
     <footer className="bg-gray-800 text-white py-12">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-2">
             <div className="mb-4">
@@ -61,6 +61,23 @@ export function Footer() {
                   className="text-gray-300 hover:text-orange-500 transition-colors"
                 >
                   Docs
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Productos */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Productos</h3>
+            <ul className="space-y-2">
+              <li>
+                <a href="/rentas-vitalicias" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Rentas Vitalicias
+                </a>
+              </li>
+              <li>
+                <a href="/charlas-previsionales" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Charlas previsionales
                 </a>
               </li>
             </ul>

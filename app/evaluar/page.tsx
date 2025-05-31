@@ -105,10 +105,20 @@ export default function EvaluationPage() {
   }
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }))
+    // Si es el campo nombre, validar que sea solo una palabra
+    if (field === "nombre") {
+      // Remover espacios extra y limitar a una palabra
+      const singleWord = value.trim().split(/\s+/)[0] || ""
+      setFormData((prev) => ({
+        ...prev,
+        [field]: singleWord,
+      }))
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: value,
+      }))
+    }
   }
 
   // Calculate min and max dates for the date input
@@ -148,11 +158,12 @@ export default function EvaluationPage() {
                   <Input
                     id="nombre"
                     type="text"
-                    placeholder="Ingresa tu nombre"
+                    placeholder="Ingresa tu nombre (una palabra)"
                     value={formData.nombre}
                     onChange={(e) => handleInputChange("nombre", e.target.value)}
                     required
                     className="h-14 text-lg text-center w-64 max-w-full"
+                    maxLength={20}
                   />
                 </div>
 
