@@ -23,16 +23,36 @@ export async function POST(request: Request) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
+        "User-Agent": "MeJubilo-App/1.0",
       },
       body: JSON.stringify(data),
+      redirect: "follow", // Follow redirects automatically
     })
 
     // Log response details
     console.log("Response status:", response.status)
+    console.log("Response URL:", response.url)
     console.log("Response headers:", Object.fromEntries(response.headers.entries()))
 
-    const responseText = await response.text()
-    console.log("Response body:", responseText)
+    let responseText = ""
+    try {
+      responseText = await response.text()
+      console.log("Response body:", responseText)
+    } catch (textError) {
+      console.log("Could not read response text:", textError)
+    }
+
+    // Handle different response statuses
+    if (response.status === 302) {
+      console.log("Received redirect (302), but data may have been processed successfully")
+      // For Google Apps Script web apps, a 302 might be normal
+      return NextResponse.json({
+        success: true,
+        message: "Datos enviados correctamente",
+        note: "Redirect received but likely processed successfully",
+      })
+    }
 
     if (!response.ok) {
       console.error("Failed to send data to Google Sheets:", response.status, response.statusText)
@@ -40,14 +60,26 @@ export async function POST(request: Request) {
         {
           error: "Failed to submit form",
           details: `Status: ${response.status}, Response: ${responseText}`,
+          url: fullUrl,
         },
         { status: 500 },
       )
     }
 
+    // Try to parse JSON response if possible
+    let responseData = null
+    try {
+      if (responseText) {
+        responseData = JSON.parse(responseText)
+      }
+    } catch (parseError) {
+      console.log("Response is not JSON:", responseText)
+    }
+
     return NextResponse.json({
       success: true,
       message: "Datos enviados correctamente",
+      responseData,
     })
   } catch (error) {
     console.error("Error processing contact form:", error)

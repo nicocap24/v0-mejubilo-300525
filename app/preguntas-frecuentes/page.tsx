@@ -25,10 +25,6 @@ const faqData: FAQItem[] = [
     question: "¿Hacen recomendaciones de fondos y/o AFP?",
     answer: "No.",
   },
-  {
-    question: "¿Cómo gana $$ este sitio?",
-    answer: "Ganamos $$",
-  },
 ]
 
 export default function PreguntasFrecuentesPage() {
@@ -93,7 +89,7 @@ export default function PreguntasFrecuentesPage() {
                   href="mailto:nico@pensionfi.com"
                   className="inline-flex items-center justify-center px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors"
                 >
-                  Enviar consulta por email
+                  Enviar consulta por email: nico@pensionfi.com
                 </a>
                 <Link href="/supuestos">
                   <Button variant="outline" className="w-full sm:w-auto">

@@ -23,9 +23,11 @@ export function HeroSection() {
             ¿Ya quieres <span className="text-orange-500">jubilar</span>?
           </h1>
 
-          {/* Subtitle */}
+          {/* Subtitle - Adjusted to move "si jubilarás hoy" to second line */}
           <p className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed max-w-3xl mx-auto">
-            Descubre cuánto $$ podrías obtener con la reforma si jubilarás hoy👇:
+            Descubre cuánto $$ podrías obtener con la reforma
+            <br />
+            si jubilarás hoy 👇
           </p>
 
           {/* CTA Button */}

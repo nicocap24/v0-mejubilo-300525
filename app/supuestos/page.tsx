@@ -39,7 +39,7 @@ export default function SupuestosPage() {
                 <li>• Tienes 65 años de edad, es decir estás en edad legal de jubilar.</li>
                 <li>• No tienes ninguna discapacidad, ni total ni parcial.</li>
                 <li>
-                  • Se usa el Valor UF del día de hoy según el Servicio de Impuestos internos: <strong>$39,000</strong>
+                  • Se usa el Valor UF según el SII al último día de actualización que es: $39.200 (al 04/06/2025)
                 </li>
               </ul>
             </div>
@@ -66,12 +66,16 @@ export default function SupuestosPage() {
                 </li>
                 <li>
                   • La tasa ocupada para calcular la renta vitalicia es última tasa promedio de toda la industria para
-                  pensión de vejez disponible por la Super de Pensiones en este link. En este caso es:{" "}
-                  <strong>3.27%</strong>
-                </li>
-                <li>
-                  • Para el cálculo de la renta vitalicia se multiplica la tasa por 2 y por el saldo y el resultado se
-                  divide por 12.
+                  pensión de vejez disponible por la Super de Pensiones en{" "}
+                  <a
+                    href="https://www.spensiones.cl/apps/tasas/tasasRentasVitalicias.php"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-orange-600 hover:text-orange-700 underline"
+                  >
+                    este link
+                  </a>
+                  . En este caso es: 3.27%
                 </li>
               </ul>
             </div>
