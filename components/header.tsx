@@ -1,5 +1,6 @@
 "use client"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export function Header() {
   return (
@@ -16,9 +17,11 @@ export function Header() {
 
           {/* Navigation Menu - Only "Descubrelo" button */}
           <div className="flex items-center">
-            <Button variant="default" className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full">
-              Descubrelo
-            </Button>
+            <Link href="/evaluar">
+              <Button variant="default" className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full">
+                Jubila
+              </Button>
+            </Link>
           </div>
         </nav>
       </div>

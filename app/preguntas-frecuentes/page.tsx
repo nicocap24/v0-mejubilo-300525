@@ -14,6 +14,11 @@ interface FAQItem {
 
 const faqData: FAQItem[] = [
   {
+    question: "¿Cómo funciona Me Jubilo?",
+    answer:
+      "Ingresas tus datos, te calculamos tu pensión de manera integral, es decir considerando los 3 tipos de pensiones que existen actualmente; Renta Vitalicia, PGU y Seguro Social. La sumatoria de todos es lo que te da realmente tu pensión total. Una vez teniendo clara y si estas próximo a jubilar puedes agendar una reunión con Nico para que te oriente en tu caso personal. O bien si aún no cumples los requisitos para jubilar puedes dejar tu correo de todos modos para ir recibiendo información máximos 1 vez por semana (Todos los Viernes) para que veas cómo vas con tu pensión y recibir tips para mejorarla.",
+  },
+  {
     question: "¿Tiene algún costo operar con Me Jubilo?",
     answer: "No. De momento es 100% Gratuito.",
   },

@@ -31,8 +31,8 @@ export default function EvaluationPage() {
   }, [formData.saldoAFP])
 
   const formatSaldo = (value: string) => {
-    // Remove any non-digit characters except dots
-    const numericValue = value.replace(/[^\d]/g, "")
+    // Remove any non-digit characters
+    const numericValue = value.replace(/\D/g, "")
 
     // If empty, return empty string
     if (!numericValue) {
@@ -141,8 +141,8 @@ export default function EvaluationPage() {
             </CardHeader>
             <CardContent className="px-8 pb-8">
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-3">
-                  <Label htmlFor="nombre" className="text-lg font-medium">
+                <div className="space-y-3 flex flex-col items-center">
+                  <Label htmlFor="nombre" className="text-lg font-medium self-center">
                     Nombre
                   </Label>
                   <Input
@@ -152,12 +152,12 @@ export default function EvaluationPage() {
                     value={formData.nombre}
                     onChange={(e) => handleInputChange("nombre", e.target.value)}
                     required
-                    className="h-12 text-lg"
+                    className="h-14 text-lg text-center w-64 max-w-full"
                   />
                 </div>
 
-                <div className="space-y-3">
-                  <Label htmlFor="saldoAFP" className="text-lg font-medium">
+                <div className="space-y-3 flex flex-col items-center">
+                  <Label htmlFor="saldoAFP" className="text-lg font-medium self-center">
                     Saldo en AFP
                   </Label>
                   <Input
@@ -167,12 +167,12 @@ export default function EvaluationPage() {
                     value={formData.saldoAFP}
                     onChange={handleSaldoChange}
                     required
-                    className="h-12 text-lg"
+                    className="h-14 text-lg text-center font-semibold w-64 max-w-full"
                   />
                 </div>
 
-                <div className="space-y-3">
-                  <Label htmlFor="fechaNacimiento" className="text-lg font-medium">
+                <div className="space-y-3 flex flex-col items-center">
+                  <Label htmlFor="fechaNacimiento" className="text-lg font-medium self-center">
                     Fecha de nacimiento
                   </Label>
                   <Input
@@ -183,20 +183,20 @@ export default function EvaluationPage() {
                     value={formData.fechaNacimiento}
                     onChange={(e) => handleInputChange("fechaNacimiento", e.target.value)}
                     required
-                    className="h-12 text-lg"
+                    className="h-14 text-lg text-center w-64 max-w-full"
                   />
                 </div>
 
-                <div className="flex gap-4 pt-6">
-                  <Link href="/" className="flex-1">
-                    <Button type="button" variant="outline" className="w-full h-12 text-lg">
+                <div className="flex gap-4 pt-6 justify-center">
+                  <Link href="/">
+                    <Button type="button" variant="outline" className="h-12 text-lg px-8">
                       Cancelar
                     </Button>
                   </Link>
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex-1 h-12 text-lg bg-red-500 hover:bg-red-600 text-white"
+                    className="h-12 text-lg bg-red-500 hover:bg-red-600 text-white px-8"
                   >
                     {isSubmitting ? (
                       <>
