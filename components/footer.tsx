@@ -7,7 +7,7 @@ export function Footer() {
           <div className="col-span-1 md:col-span-2">
             <div className="mb-4">
               <span className="text-2xl font-bold">
-                <span className="text-white">Me</span>
+                <span className="text-white">Me </span>
                 <span className="text-orange-500">Jubilo</span>
               </span>
             </div>
@@ -78,6 +78,11 @@ export function Footer() {
               <li>
                 <a href="/charlas-previsionales" className="text-gray-300 hover:text-orange-500 transition-colors">
                   Charlas previsionales
+                </a>
+              </li>
+              <li>
+                <a href="/publicita-con-nosotros" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Publicita con nosotros
                 </a>
               </li>
             </ul>

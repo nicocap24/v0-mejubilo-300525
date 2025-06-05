@@ -27,11 +27,12 @@ export function SubscriptionModal({ isOpen, onClose, userName }: SubscriptionMod
     try {
       // Save email to Google Sheets
       const dataToSave = {
-        FECHA: new Date().toISOString().split("T")[0], // Current date in YYYY-MM-DD format
+        FECHA: new Date().toISOString(), // Full date and time in ISO format
         TIPO: "SUSCRIPCION", // Type of entry
         NOMBRE: userName,
         EMAIL: email,
         ESTADO: "ACTIVO", // Subscription status
+        SUSCRITO: "SI", // New column for newsletter subscription
       }
 
       const response = await fetch("/api/contact", {

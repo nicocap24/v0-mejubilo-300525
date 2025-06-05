@@ -28,7 +28,7 @@ export function FeedbackModal({ isOpen, onClose, feedbackType, userName }: Feedb
     try {
       // Save feedback to Google Sheets
       const dataToSave = {
-        FECHA: new Date().toISOString().split("T")[0], // Current date in YYYY-MM-DD format
+        FECHA: new Date().toISOString(), // Full date and time in ISO format
         TIPO: "FEEDBACK", // Type of entry
         NOMBRE: userName,
         UP: feedbackType === "UP" ? "1" : "0",

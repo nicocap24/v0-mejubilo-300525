@@ -4,6 +4,9 @@ export async function POST(request: Request) {
   try {
     const data = await request.json()
 
+    // Update FECHA to full ISO format
+    data.FECHA = new Date().toISOString()
+
     const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL
     if (!webhookUrl) {
       console.error("GOOGLE_SHEETS_WEBHOOK_URL environment variable not configured")

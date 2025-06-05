@@ -27,7 +27,7 @@ export function HeroSection() {
           <p className="text-xl md:text-2xl text-gray-600 mb-12 leading-relaxed max-w-3xl mx-auto">
             Descubre cuánto $$ podrías obtener con la reforma
             <br />
-            si jubilarás hoy 👇
+            si jubilaras hoy 👇
           </p>
 
           {/* CTA Button */}

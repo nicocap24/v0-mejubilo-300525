@@ -9,7 +9,6 @@ import { useMemo, useState } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ContactModal } from "@/components/contact-modal"
-import { SubscriptionModal } from "@/components/subscription-modal"
 import { FeedbackModal } from "@/components/feedback-modal"
 
 // Import the necessary icons at the top
@@ -18,7 +17,6 @@ import { MessageCircle, Mail } from "lucide-react"
 export default function ResultsPage() {
   const searchParams = useSearchParams()
   const [isContactModalOpen, setIsContactModalOpen] = useState(false)
-  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false)
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false)
   const [feedbackType, setFeedbackType] = useState<"UP" | "DOWN" | null>(null)
 
@@ -27,27 +25,9 @@ export default function ResultsPage() {
     return {
       nombre: searchParams.get("nombre") || "",
       saldoAFP: searchParams.get("saldoAFP") || "",
-      fechaNacimiento: searchParams.get("fechaNacimiento") || "",
+      email: searchParams.get("email") || "",
     }
   }, [searchParams])
-
-  // Calculate user's age
-  const calculateAge = () => {
-    if (!formData.fechaNacimiento) return 0
-
-    const birthDate = new Date(formData.fechaNacimiento)
-    const today = new Date()
-
-    let age = today.getFullYear() - birthDate.getFullYear()
-    const monthDiff = today.getMonth() - birthDate.getMonth()
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--
-    }
-
-    return age
-  }
-
-  const userAge = calculateAge()
 
   // Updated calculation logic with the correct formulas
   const calculatePensions = () => {
@@ -121,7 +101,6 @@ export default function ResultsPage() {
       debug: {
         saldoOriginal: formData.saldoAFP,
         saldoParsed: saldo,
-        age: userAge,
         rentaVitaliciaCalc: rentaVitaliciaCalc,
       },
     }
@@ -137,15 +116,10 @@ export default function ResultsPage() {
     }).format(amount)
   }
 
-  // Determine button text and action based on age AND Renta Vitalicia
-  const canScheduleWithNico = userAge >= 55 && results.rentaVitalicia > 0
-  const buttonText = canScheduleWithNico ? "Agendar con Nico" : "Suscríbete"
+  // Always show "Contrata una renta vitalicia con Nico" regardless of age or Renta Vitalicia
+  const buttonText = "Contrata una renta vitalicia con Nico"
   const handleMainButtonClick = () => {
-    if (canScheduleWithNico) {
-      setIsContactModalOpen(true)
-    } else {
-      setIsSubscriptionModalOpen(true)
-    }
+    setIsContactModalOpen(true)
   }
 
   // Handle feedback button clicks
@@ -154,8 +128,15 @@ export default function ResultsPage() {
     setIsFeedbackModalOpen(true)
   }
 
+  // Create recalculate URL with current data
+  const recalculateUrl = `/evaluar?${new URLSearchParams({
+    nombre: formData.nombre,
+    saldoAFP: formData.saldoAFP,
+    email: formData.email,
+  }).toString()}`
+
   // Show error message if no data is provided
-  if (!formData.nombre || !formData.saldoAFP || !formData.fechaNacimiento) {
+  if (!formData.nombre || !formData.saldoAFP) {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
@@ -208,7 +189,7 @@ export default function ResultsPage() {
         <div className="absolute inset-0 bg-white/20"></div>
 
         <div className="relative z-10 container mx-auto px-4">
-          <Link href="/evaluar" className="inline-flex items-center text-gray-700 hover:text-gray-900 mb-6">
+          <Link href={recalculateUrl} className="inline-flex items-center text-gray-700 hover:text-gray-900 mb-6">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Volver al formulario
           </Link>
@@ -216,9 +197,8 @@ export default function ResultsPage() {
           <Card className="w-full max-w-2xl mx-auto bg-white/95 backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="text-center text-3xl font-bold text-gray-800">
-                Resultados de tu Evaluación
+                {formData.nombre}, esta es tu pensión estimada si te jubilaras hoy 👀👇
               </CardTitle>
-              <p className="text-center text-gray-600 text-lg">Hola {formData.nombre}, estos son tus resultados:</p>
             </CardHeader>
             <CardContent className="space-y-8">
               {/* Individual Pension Components */}
@@ -270,6 +250,9 @@ export default function ResultsPage() {
 
               {/* Main Action Button - Changes based on age */}
               <div className="flex flex-col items-center gap-6 pt-6">
+                {/* Added text above the button */}
+                <p className="text-xl text-gray-800 font-medium text-center">¿Ya quieres jubilar? 👇</p>
+
                 <Button
                   className="bg-orange-500 hover:bg-orange-600 text-white px-12 py-4 text-xl rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                   onClick={handleMainButtonClick}
@@ -277,7 +260,7 @@ export default function ResultsPage() {
                   {buttonText}
                 </Button>
 
-                <Link href="/evaluar">
+                <Link href={recalculateUrl}>
                   <Button variant="outline" className="px-8 py-2 text-base">
                     Recalcular
                   </Button>
@@ -367,13 +350,6 @@ export default function ResultsPage() {
 
       {/* Contact Modal for users 55+ */}
       <ContactModal isOpen={isContactModalOpen} onClose={() => setIsContactModalOpen(false)} />
-
-      {/* Subscription Modal for users under 55 */}
-      <SubscriptionModal
-        isOpen={isSubscriptionModalOpen}
-        onClose={() => setIsSubscriptionModalOpen(false)}
-        userName={formData.nombre}
-      />
 
       {/* Feedback Modal */}
       <FeedbackModal

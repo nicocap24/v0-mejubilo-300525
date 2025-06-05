@@ -27,6 +27,19 @@ export default function RootLayout({
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+        {/* Script para prevenir errores de MetaMask */}
+        <Script id="metamask-handling" strategy="beforeInteractive">
+          {`
+            // Prevenir errores de MetaMask
+            window.addEventListener('error', function(e) {
+              if (e.message && e.message.includes('MetaMask')) {
+                console.log('Prevented MetaMask error logging');
+                e.stopPropagation();
+                e.preventDefault();
+              }
+            });
+          `}
+        </Script>
       </head>
       <body className={inter.className}>
         {children}

@@ -2,12 +2,13 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useRouter } from "next/navigation"
+import { Checkbox } from "@/components/ui/checkbox"
+import { useRouter, useSearchParams } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
@@ -16,83 +17,127 @@ import { Footer } from "@/components/footer"
 
 export default function EvaluationPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
     nombre: "",
     saldoAFP: "",
-    fechaNacimiento: "",
+    email: "",
+    acceptNewsletter: false,
   })
 
-  // Format saldo with $ and dots when it changes
+  // Load previous data from URL params when component mounts
   useEffect(() => {
-    if (formData.saldoAFP && !formData.saldoAFP.startsWith("$")) {
-      formatSaldo(formData.saldoAFP)
-    }
-  }, [formData.saldoAFP])
+    const nombre = searchParams.get("nombre") || ""
+    const saldoAFP = searchParams.get("saldoAFP") || ""
+    const email = searchParams.get("email") || ""
 
-  const formatSaldo = (value: string) => {
+    // Only update if the values are different to prevent infinite loops
+    setFormData((prevData) => {
+      if (prevData.nombre !== nombre || prevData.saldoAFP !== saldoAFP || prevData.email !== email) {
+        return {
+          nombre,
+          saldoAFP,
+          email,
+          acceptNewsletter: false, // Reset newsletter preference
+        }
+      }
+      return prevData
+    })
+  }, []) // Remove searchParams from dependency array to prevent infinite loops
+
+  const formatSaldo = useCallback((value: string) => {
     // Remove any non-digit characters
     const numericValue = value.replace(/\D/g, "")
 
     // If empty, return empty string
     if (!numericValue) {
-      setFormData((prev) => ({ ...prev, saldoAFP: "" }))
-      return
+      return ""
     }
 
     // Format with dots for thousands
     const formattedValue = Number(numericValue).toLocaleString("es-CL")
 
     // Add $ prefix
-    setFormData((prev) => ({ ...prev, saldoAFP: `$${formattedValue}` }))
-  }
+    return `$${formattedValue}`
+  }, [])
 
-  const handleSaldoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
+  const handleSaldoChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
 
-    // If user is deleting the $ sign, reset the field
-    if (value === "") {
-      setFormData((prev) => ({ ...prev, saldoAFP: "" }))
-      return
-    }
+      // If user is deleting everything, reset the field
+      if (value === "" || value === "$") {
+        setFormData((prev) => ({ ...prev, saldoAFP: "" }))
+        return
+      }
 
-    // If user is typing, update the raw value and let useEffect handle formatting
-    setFormData((prev) => ({ ...prev, saldoAFP: value }))
-  }
+      // Format the value and update state
+      const formattedValue = formatSaldo(value)
+      setFormData((prev) => ({ ...prev, saldoAFP: formattedValue }))
+    },
+    [formatSaldo],
+  )
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
 
     try {
-      // First, save data to Google Sheets
-      const dataToSave = {
-        FECHA: new Date().toISOString().split("T")[0], // Current date in YYYY-MM-DD format
+      // First, save evaluation data to Google Sheets
+      const evaluationData = {
+        FECHA: new Date().toISOString(), // Full date and time in ISO format
+        TIPO: "EVALUACION", // Type of entry
         AFP: "No especificado", // We don't collect AFP in this form
         FONDO: "No especificado", // We don't collect fund type in this form
         SALDO: formData.saldoAFP,
-        FECHANACIMIENTO: formData.fechaNacimiento,
+        FECHANACIMIENTO: "No especificado", // No longer collecting birth date
         NOMBRE: formData.nombre,
-        EMAIL: "No especificado", // We don't collect email in this form
+        EMAIL: formData.email,
+        SUSCRITO: formData.acceptNewsletter ? "SI" : "NO", // New column for newsletter subscription
       }
 
-      const response = await fetch("/api/contact", {
+      const evaluationResponse = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(dataToSave),
+        body: JSON.stringify(evaluationData),
       })
 
-      if (!response.ok) {
-        throw new Error("Failed to save data to Google Sheets")
+      if (!evaluationResponse.ok) {
+        throw new Error("Failed to save evaluation data to Google Sheets")
+      }
+
+      // If user accepted newsletter, save subscription data separately
+      if (formData.acceptNewsletter && formData.email) {
+        const subscriptionData = {
+          FECHA: new Date().toISOString(), // Full date and time in ISO format
+          TIPO: "SUSCRIPCION",
+          NOMBRE: formData.nombre,
+          EMAIL: formData.email,
+          ESTADO: "ACTIVO",
+          SUSCRITO: "SI",
+        }
+
+        const subscriptionResponse = await fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(subscriptionData),
+        })
+
+        if (!subscriptionResponse.ok) {
+          console.warn("Failed to save subscription data, but continuing with evaluation")
+        }
       }
 
       // If successful, redirect to results page
       const params = new URLSearchParams({
         nombre: formData.nombre,
         saldoAFP: formData.saldoAFP,
-        fechaNacimiento: formData.fechaNacimiento,
+        email: formData.email,
       }).toString()
 
       router.push(`/resultados?${params}`)
@@ -104,26 +149,24 @@ export default function EvaluationPage() {
     }
   }
 
-  const handleInputChange = (field: string, value: string) => {
-    // Si es el campo nombre, validar que sea solo una palabra
-    if (field === "nombre") {
-      // Remover espacios extra y limitar a una palabra
-      const singleWord = value.trim().split(/\s+/)[0] || ""
-      setFormData((prev) => ({
-        ...prev,
-        [field]: singleWord,
-      }))
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [field]: value,
-      }))
-    }
-  }
-
-  // Calculate min and max dates for the date input
-  const minDate = "1900-01-01"
-  const maxDate = "2025-12-31"
+  const handleInputChange = useCallback((field: string, value: string | boolean) => {
+    setFormData((prev) => {
+      // Si es el campo nombre, validar que sea solo una palabra
+      if (field === "nombre" && typeof value === "string") {
+        // Remover espacios extra y limitar a una palabra
+        const singleWord = value.trim().split(/\s+/)[0] || ""
+        return {
+          ...prev,
+          [field]: singleWord,
+        }
+      } else {
+        return {
+          ...prev,
+          [field]: value,
+        }
+      }
+    })
+  }, [])
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -158,7 +201,7 @@ export default function EvaluationPage() {
                   <Input
                     id="nombre"
                     type="text"
-                    placeholder="Ingresa tu nombre (una palabra)"
+                    placeholder="Ingresa tu nombre"
                     value={formData.nombre}
                     onChange={(e) => handleInputChange("nombre", e.target.value)}
                     required
@@ -183,27 +226,37 @@ export default function EvaluationPage() {
                 </div>
 
                 <div className="space-y-3 flex flex-col items-center">
-                  <Label htmlFor="fechaNacimiento" className="text-lg font-medium self-center">
-                    Fecha de nacimiento
+                  <Label htmlFor="email" className="text-lg font-medium self-center">
+                    Email
                   </Label>
                   <Input
-                    id="fechaNacimiento"
-                    type="date"
-                    min={minDate}
-                    max={maxDate}
-                    value={formData.fechaNacimiento}
-                    onChange={(e) => handleInputChange("fechaNacimiento", e.target.value)}
+                    id="email"
+                    type="email"
+                    placeholder="tu@correo.com"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange("email", e.target.value)}
                     required
                     className="h-14 text-lg text-center w-64 max-w-full"
                   />
                 </div>
 
-                <div className="flex gap-4 pt-6 justify-center">
-                  <Link href="/">
-                    <Button type="button" variant="outline" className="h-12 text-lg px-8">
-                      Cancelar
-                    </Button>
-                  </Link>
+                {/* Newsletter subscription checkbox */}
+                <div className="flex flex-col items-center space-y-3 pt-2">
+                  <div className="flex items-center space-x-3 max-w-md">
+                    <Checkbox
+                      id="newsletter"
+                      checked={formData.acceptNewsletter}
+                      onCheckedChange={(checked) => handleInputChange("acceptNewsletter", checked as boolean)}
+                      className="h-5 w-5"
+                    />
+                    <Label htmlFor="newsletter" className="text-sm text-gray-700 leading-relaxed cursor-pointer">
+                      Deseo recibir más información sobre mi jubilación. Mandamos máximo 1 correo semanal. Generalmente
+                      los Viernes.
+                    </Label>
+                  </div>
+                </div>
+
+                <div className="flex justify-center pt-6">
                   <Button
                     type="submit"
                     disabled={isSubmitting}
@@ -212,10 +265,10 @@ export default function EvaluationPage() {
                     {isSubmitting ? (
                       <>
                         <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></span>
-                        Calculando...
+                        Simulando...
                       </>
                     ) : (
-                      "Calcular"
+                      "Simular"
                     )}
                   </Button>
                 </div>

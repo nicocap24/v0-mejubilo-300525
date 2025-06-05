@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, CheckCircle, Phone, Mail, Calendar } from "lucide-react"
+import { ArrowLeft, CheckCircle, Phone, Mail } from "lucide-react"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -128,15 +128,6 @@ export default function RentasVitaliciasPage() {
                         regiones) o por videollamada dependiendo el caso.
                       </p>
                       <div className="flex flex-col sm:flex-row gap-4">
-                        <a
-                          href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2FER7UrHGLGNkW8YgZkdtNNjBb8NrKkN5ClDVVZ8fWl7-Hs8V8zXqY5QJF5vQ-QGxQQGxQ"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-medium transition-colors"
-                        >
-                          <Calendar className="w-5 h-5" />
-                          Agendar reunión
-                        </a>
                         <a
                           href="https://wa.me/56923935961"
                           target="_blank"

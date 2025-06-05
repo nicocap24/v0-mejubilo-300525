@@ -9,10 +9,12 @@ export function Header() {
         <nav className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
-            <span className="text-2xl font-bold">
-              <span className="text-gray-800">Me</span>
-              <span className="text-orange-500">Jubilo</span>
-            </span>
+            <Link href="/" className="flex items-center">
+              <span className="text-2xl font-bold">
+                <span className="text-gray-800">Me </span>
+                <span className="text-orange-500">Jubilo</span>
+              </span>
+            </Link>
           </div>
 
           {/* Navigation Menu - Only "Descubrelo" button */}
