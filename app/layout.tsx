@@ -4,6 +4,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "sonner"
 import Script from "next/script"
+import { Suspense } from "react"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -21,12 +22,25 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
+        {/* Google Analytics */}
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-WS9ZZVX576" strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-WS9ZZVX576');
+          `}
+        </Script>
+
+        {/* Google AdSense */}
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5179832879235237"
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+
         {/* Script para prevenir errores de MetaMask */}
         <Script id="metamask-handling" strategy="beforeInteractive">
           {`
@@ -44,7 +58,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <body className={inter.className}>
-        {children}
+        <Suspense fallback={null}>{children}</Suspense>
         <Toaster position="top-center" />
       </body>
     </html>
