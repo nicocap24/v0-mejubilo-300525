@@ -10,6 +10,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ContactModal } from "@/components/contact-modal"
 import { FeedbackModal } from "@/components/feedback-modal"
+import { InfoTooltip } from "@/components/info-tooltip"
 
 // Import the necessary icons at the top
 import { MessageCircle, Mail } from "lucide-react"
@@ -175,6 +176,96 @@ export default function ResultsPage() {
     )
   }
 
+  // Content for each pension type tooltip
+  const rentaVitaliciaInfo = (
+    <div className="space-y-2">
+      <p>
+        <strong>Requisitos:</strong>
+      </p>
+      <ul className="list-disc pl-4 space-y-1">
+        <li>Edad legal de jubilación (65 años hombres)</li>
+        <li>Mínimo 3 UF mensuales (bajará a 2 UF con la reforma)</li>
+        <li>Grupo familiar: Soltero sin hijos</li>
+      </ul>
+      <p>
+        <strong>Tasa utilizada:</strong> 3.27% (promedio industria)
+      </p>
+      <p>
+        <strong>Características:</strong> Pensión fija en UF de por vida, protegida contra inflación.
+      </p>
+    </div>
+  )
+
+  const pguInfo = (
+    <div className="space-y-2">
+      <p>
+        <strong>Monto base:</strong> $214,296 (2024)
+      </p>
+      <p>
+        <strong>Requisitos:</strong>
+      </p>
+      <ul className="list-disc pl-4 space-y-1">
+        <li>Estar en el 90% menos rico del país</li>
+        <li>Ser chileno y residir en Chile por 20 años</li>
+        <li>Residir 4 de los últimos 5 años en Chile</li>
+      </ul>
+      <p>
+        <strong>Cálculo:</strong>
+      </p>
+      <ul className="list-disc pl-4 space-y-1">
+        <li>Si Renta Vitalicia {"<"} $729,764: PGU completa</li>
+        <li>Si Renta Vitalicia {">"} $1,158,355: Sin PGU</li>
+        <li>Entre ambos montos: PGU proporcional</li>
+      </ul>
+    </div>
+  )
+
+  const seguroSocialInfo = (
+    <div className="space-y-2">
+      <p>
+        <strong>Requisitos:</strong>
+      </p>
+      <ul className="list-disc pl-4 space-y-1">
+        <li>Mínimo 20 años cotizados (hombres)</li>
+        <li>Máximo 25 años cotizados</li>
+      </ul>
+      <p>
+        <strong>Beneficio:</strong> 0.1 UF por año cotizado
+      </p>
+      <p>
+        <strong>Estimación por saldo:</strong>
+      </p>
+      <ul className="list-disc pl-4 space-y-1">
+        <li>Saldo ≥ $50M: 25 años cotizados (2.5 UF = $98,000)</li>
+        <li>Saldo ≥ $25M: 20 años cotizados (2.0 UF = $78,400)</li>
+        <li>Saldo {"<"} $25M: No califica</li>
+      </ul>
+    </div>
+  )
+
+  const totalInfo = (
+    <div className="space-y-2">
+      <p>
+        <strong>Pensión Total:</strong> Suma de los tres componentes del sistema previsional chileno.
+      </p>
+      <p>
+        <strong>Componentes:</strong>
+      </p>
+      <ul className="list-disc pl-4 space-y-1">
+        <li>Renta Vitalicia (pilar contributivo)</li>
+        <li>PGU - Pensión Garantizada Universal (pilar solidario)</li>
+        <li>Seguro Social (beneficio adicional)</li>
+      </ul>
+      <p>
+        <strong>Importante:</strong> Esta es una estimación basada en supuestos. Los montos reales pueden variar según
+        condiciones del mercado y regulaciones vigentes.
+      </p>
+      <p>
+        <strong>UF utilizada:</strong> $39,200 (04/06/2025)
+      </p>
+    </div>
+  )
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -204,8 +295,11 @@ export default function ResultsPage() {
               {/* Individual Pension Components */}
               <div className="grid gap-6">
                 <div className="flex justify-between items-center p-6 bg-blue-50 rounded-lg border">
-                  <div>
-                    <h3 className="font-semibold text-gray-800 text-xl">Renta Vitalicia</h3>
+                  <div className="flex items-center gap-3">
+                    <div>
+                      <h3 className="font-semibold text-gray-800 text-xl">Renta Vitalicia</h3>
+                    </div>
+                    <InfoTooltip title="Renta Vitalicia" content={rentaVitaliciaInfo} />
                   </div>
                   <div className="text-right">
                     <p className="text-3xl font-bold text-blue-600">{formatCurrency(results.rentaVitalicia)}</p>
@@ -214,8 +308,11 @@ export default function ResultsPage() {
                 </div>
 
                 <div className="flex justify-between items-center p-6 bg-green-50 rounded-lg border">
-                  <div>
-                    <h3 className="font-semibold text-gray-800 text-xl">PGU</h3>
+                  <div className="flex items-center gap-3">
+                    <div>
+                      <h3 className="font-semibold text-gray-800 text-xl">PGU</h3>
+                    </div>
+                    <InfoTooltip title="Pensión Garantizada Universal (PGU)" content={pguInfo} />
                   </div>
                   <div className="text-right">
                     <p className="text-3xl font-bold text-green-600">{formatCurrency(results.pgu)}</p>
@@ -224,8 +321,11 @@ export default function ResultsPage() {
                 </div>
 
                 <div className="flex justify-between items-center p-6 bg-purple-50 rounded-lg border">
-                  <div>
-                    <h3 className="font-semibold text-gray-800 text-xl">Seguro Social</h3>
+                  <div className="flex items-center gap-3">
+                    <div>
+                      <h3 className="font-semibold text-gray-800 text-xl">Seguro Social</h3>
+                    </div>
+                    <InfoTooltip title="Seguro Social" content={seguroSocialInfo} />
                   </div>
                   <div className="text-right">
                     <p className="text-3xl font-bold text-purple-600">{formatCurrency(results.seguroSocial)}</p>
@@ -237,9 +337,12 @@ export default function ResultsPage() {
               {/* Total */}
               <div className="border-t pt-6">
                 <div className="flex justify-between items-center p-8 bg-orange-50 rounded-lg border-2 border-orange-200">
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-800">Total Pensión Mensual</h2>
-                    <p className="text-base text-gray-600">Suma de todos los beneficios</p>
+                  <div className="flex items-center gap-3">
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-800">Total Pensión Mensual</h2>
+                      <p className="text-base text-gray-600">Suma de todos los beneficios</p>
+                    </div>
+                    <InfoTooltip title="Pensión Total" content={totalInfo} />
                   </div>
                   <div className="text-right">
                     <p className="text-4xl font-bold text-orange-600">{formatCurrency(results.total)}</p>
