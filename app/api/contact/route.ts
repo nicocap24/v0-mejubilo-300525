@@ -13,8 +13,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Webhook URL not configured" }, { status: 500 })
     }
 
+    // Determine which endpoint to use based on data type
+    let endpoint = "form" // default endpoint
+
+    if (data.TIPO === "EBOOK_INTERES") {
+      endpoint = "ebook" // specific endpoint for ebook interest
+    }
+
     // Construct the full URL with query parameter
-    const fullUrl = `${webhookUrl}?endpoint=form`
+    const fullUrl = `${webhookUrl}?endpoint=${endpoint}`
 
     // Log the URL being used (for debugging)
     console.log("Webhook URL:", webhookUrl)

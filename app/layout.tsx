@@ -3,7 +3,6 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "sonner"
-import Script from "next/script"
 import { Suspense } from "react"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -22,12 +21,13 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
-        {/* Enhanced MetaMask error prevention */}
-        <Script id="metamask-error-prevention" strategy="beforeInteractive">
-          {`
-            // Comprehensive MetaMask error prevention
+        {/* MetaMask Error Suppression - Improved Version */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            // Direct script injection for earliest possible execution
             (function() {
-              // Prevent MetaMask connection errors
+              // Override console.error before any other scripts run
               const originalConsoleError = console.error;
               console.error = function(...args) {
                 const message = args.join(' ');
@@ -38,7 +38,7 @@ export default function RootLayout({
                   message.includes('extension not found') ||
                   message.includes('ethereum')
                 ) {
-                  // Silently ignore MetaMask-related errors
+                  // Completely suppress MetaMask-related errors
                   return;
                 }
                 originalConsoleError.apply(console, args);
@@ -48,11 +48,14 @@ export default function RootLayout({
               window.addEventListener('unhandledrejection', function(event) {
                 if (
                   event.reason && 
-                  (event.reason.message || '').toLowerCase().includes('metamask')
+                  (String(event.reason).includes('MetaMask') ||
+                   String(event.reason).includes('ChromeTransport') ||
+                   String(event.reason).includes('connectChrome'))
                 ) {
                   event.preventDefault();
+                  event.stopPropagation();
                 }
-              });
+              }, true);
 
               // Prevent general errors from MetaMask
               window.addEventListener('error', function(event) {
@@ -62,39 +65,51 @@ export default function RootLayout({
                    event.message.includes('ChromeTransport') ||
                    event.message.includes('connectChrome'))
                 ) {
-                  event.stopPropagation();
                   event.preventDefault();
+                  event.stopPropagation();
+                  return false;
                 }
-              });
+              }, true);
 
               // Mock ethereum object if it doesn't exist to prevent errors
-              if (typeof window !== 'undefined' && !window.ethereum) {
-                window.ethereum = {
-                  isMetaMask: false,
-                  request: () => Promise.reject(new Error('MetaMask not installed'))
-                };
+              if (typeof window !== 'undefined') {
+                Object.defineProperty(window, 'ethereum', {
+                  value: {
+                    isMetaMask: false,
+                    request: () => Promise.reject(new Error('MetaMask not installed')),
+                    on: () => {},
+                    removeListener: () => {},
+                    autoRefreshOnNetworkChange: false,
+                    _metamask: { isUnlocked: () => Promise.resolve(false) }
+                  },
+                  writable: false,
+                  configurable: false
+                });
               }
             })();
-          `}
-        </Script>
+          `,
+          }}
+        />
 
-        {/* Google Analytics */}
-        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-WS9ZZVX576" strategy="afterInteractive" />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-WS9ZZVX576');
-          `}
-        </Script>
+        {/* Microsoft Clarity */}
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{
+            __html: `
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "rx0f3x9f27");
+          `,
+          }}
+        />
 
         {/* Google AdSense */}
-        <Script
+        <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5179832879235237"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
         />
 
         <link rel="icon" href="/favicon.png" type="image/svg+xml" />
