@@ -17,11 +17,14 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Navigation Menu - Only "Descubrelo" button */}
+          {/* Navigation Menu - Only "Quiero jubilar" button */}
           <div className="flex items-center">
             <Link href="/evaluar">
-              <Button variant="default" className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full">
-                Jubila
+              <Button
+                variant="default"
+                className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full animate-dance cta-button hover:animate-none transition-all duration-300 transform hover:scale-105 shadow-lg"
+              >
+                Quiero jubilar
               </Button>
             </Link>
           </div>

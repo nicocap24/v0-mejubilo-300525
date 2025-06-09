@@ -22,6 +22,62 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
+        {/* Enhanced MetaMask error prevention */}
+        <Script id="metamask-error-prevention" strategy="beforeInteractive">
+          {`
+            // Comprehensive MetaMask error prevention
+            (function() {
+              // Prevent MetaMask connection errors
+              const originalConsoleError = console.error;
+              console.error = function(...args) {
+                const message = args.join(' ');
+                if (
+                  message.includes('MetaMask') ||
+                  message.includes('ChromeTransport') ||
+                  message.includes('connectChrome') ||
+                  message.includes('extension not found') ||
+                  message.includes('ethereum')
+                ) {
+                  // Silently ignore MetaMask-related errors
+                  return;
+                }
+                originalConsoleError.apply(console, args);
+              };
+
+              // Prevent unhandled promise rejections from MetaMask
+              window.addEventListener('unhandledrejection', function(event) {
+                if (
+                  event.reason && 
+                  (event.reason.message || '').toLowerCase().includes('metamask')
+                ) {
+                  event.preventDefault();
+                }
+              });
+
+              // Prevent general errors from MetaMask
+              window.addEventListener('error', function(event) {
+                if (
+                  event.message && 
+                  (event.message.includes('MetaMask') || 
+                   event.message.includes('ChromeTransport') ||
+                   event.message.includes('connectChrome'))
+                ) {
+                  event.stopPropagation();
+                  event.preventDefault();
+                }
+              });
+
+              // Mock ethereum object if it doesn't exist to prevent errors
+              if (typeof window !== 'undefined' && !window.ethereum) {
+                window.ethereum = {
+                  isMetaMask: false,
+                  request: () => Promise.reject(new Error('MetaMask not installed'))
+                };
+              }
+            })();
+          `}
+        </Script>
+
         {/* Google Analytics */}
         <Script async src="https://www.googletagmanager.com/gtag/js?id=G-WS9ZZVX576" strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -41,19 +97,6 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
 
-        {/* Script para prevenir errores de MetaMask */}
-        <Script id="metamask-handling" strategy="beforeInteractive">
-          {`
-            // Prevenir errores de MetaMask
-            window.addEventListener('error', function(e) {
-              if (e.message && e.message.includes('MetaMask')) {
-                console.log('Prevented MetaMask error logging');
-                e.stopPropagation();
-                e.preventDefault();
-              }
-            });
-          `}
-        </Script>
         <link rel="icon" href="/favicon.png" type="image/svg+xml" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
