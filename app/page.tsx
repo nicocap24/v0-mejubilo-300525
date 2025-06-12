@@ -11,7 +11,7 @@ export default function HomePage() {
       <HeroSection />
 
       {/* AdSense Banner después del Hero */}
-      <section className="py-8">
+      <section className="py-4">
         <div className="container mx-auto px-4">
           <AdSenseBanner
             adSlot="1234567890"
@@ -24,7 +24,7 @@ export default function HomePage() {
       <BlogSection />
 
       {/* AdSense Banner antes del Footer */}
-      <section className="py-8 bg-gray-50">
+      <section className="py-4 bg-gray-50">
         <div className="container mx-auto px-4">
           <AdSenseBanner
             adSlot="0987654321"

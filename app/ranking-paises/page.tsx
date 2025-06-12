@@ -221,7 +221,7 @@ export default function RankingPaisesPage() {
               </p>
             </CardHeader>
 
-            <CardContent className="space-y-8">
+            <CardContent className="space-y-6">
               {/* Filter Buttons */}
               <div className="flex flex-wrap justify-center gap-4">
                 <Button
@@ -255,7 +255,7 @@ export default function RankingPaisesPage() {
               </div>
 
               {/* AdSense Banner después de los filtros */}
-              <div className="py-6">
+              <div className="py-4">
                 <AdSenseBanner
                   adSlot="3333333333"
                   className="w-full"
@@ -449,7 +449,7 @@ export default function RankingPaisesPage() {
               </div>
 
               {/* AdSense Banner antes de la metodología */}
-              <div className="py-6">
+              <div className="py-4">
                 <AdSenseBanner
                   adSlot="4444444444"
                   className="w-full"
@@ -458,7 +458,7 @@ export default function RankingPaisesPage() {
               </div>
 
               {/* Methodology Section */}
-              <Card className="mt-12 bg-gray-50">
+              <Card className="mt-8 bg-gray-50">
                 <CardHeader>
                   <CardTitle className="text-2xl font-bold text-gray-800">Metodología y Fuentes</CardTitle>
                 </CardHeader>
