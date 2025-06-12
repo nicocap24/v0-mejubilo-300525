@@ -90,6 +90,11 @@ export function Footer() {
                   Publicita con nosotros
                 </a>
               </li>
+              <li>
+                <a href="/ranking-paises" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Ranking países
+                </a>
+              </li>
             </ul>
           </div>
 

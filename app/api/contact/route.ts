@@ -18,15 +18,28 @@ export async function POST(request: Request) {
 
     if (data.TIPO === "EBOOK_INTERES") {
       endpoint = "ebook" // specific endpoint for ebook interest
+    } else if (data.TIPO === "CONTACTO_JUBILACION") {
+      endpoint = "contacto" // specific endpoint for retirement contact
     }
 
     // Construct the full URL with query parameter
     const fullUrl = `${webhookUrl}?endpoint=${endpoint}`
 
-    // Log the URL being used (for debugging)
+    // Enhanced logging for debugging
+    console.log("=== CONTACT API DEBUG ===")
     console.log("Webhook URL:", webhookUrl)
     console.log("Full URL with query:", fullUrl)
     console.log("Data being sent:", JSON.stringify(data, null, 2))
+    console.log("Data type:", data.TIPO)
+    console.log("Endpoint:", endpoint)
+
+    // Log specific fields for CONTACTO_JUBILACION
+    if (data.TIPO === "CONTACTO_JUBILACION") {
+      console.log("=== CONTACTO_JUBILACION FIELDS ===")
+      console.log("PARTEPROCESO:", data.PARTEPROCESO)
+      console.log("METODOPREFERIDO:", data.METODOPREFERIDO)
+      console.log("DISPONIBILIDAD:", data.DISPONIBILIDAD)
+    }
 
     // Send data to Google Sheets webhook with the required query parameter
     const response = await fetch(fullUrl, {
@@ -41,6 +54,7 @@ export async function POST(request: Request) {
     })
 
     // Log response details
+    console.log("=== RESPONSE DEBUG ===")
     console.log("Response status:", response.status)
     console.log("Response URL:", response.url)
     console.log("Response headers:", Object.fromEntries(response.headers.entries()))
@@ -61,6 +75,11 @@ export async function POST(request: Request) {
         success: true,
         message: "Datos enviados correctamente",
         note: "Redirect received but likely processed successfully",
+        debug: {
+          sentData: data,
+          responseStatus: response.status,
+          responseText: responseText,
+        },
       })
     }
 
@@ -71,6 +90,7 @@ export async function POST(request: Request) {
           error: "Failed to submit form",
           details: `Status: ${response.status}, Response: ${responseText}`,
           url: fullUrl,
+          sentData: data,
         },
         { status: 500 },
       )
@@ -86,10 +106,63 @@ export async function POST(request: Request) {
       console.log("Response is not JSON:", responseText)
     }
 
+    // If this is a retirement contact with email flag, send notification email
+    if (data.TIPO === "CONTACTO_JUBILACION" && data.ENVIAR_EMAIL === "SI") {
+      try {
+        // Send email notification using the new column names
+        const emailData = {
+          TIPO: "EMAIL_NOTIFICACION",
+          DESTINATARIO: data.EMAIL_DESTINO || "hinicocapital@gmail.com",
+          ASUNTO: "Nueva solicitud de jubilación - Me Jubilo",
+          MENSAJE: `
+Nueva solicitud de jubilación recibida:
+
+📋 Parte del proceso: ${data.PARTEPROCESO}
+📞 Método preferido: ${data.METODOPREFERIDO}
+📅 Disponibilidad: ${data.DISPONIBILIDAD}
+🕐 Fecha: ${new Date(data.FECHA).toLocaleString("es-CL")}
+🌐 Origen: ${data.ORIGEN}
+
+Por favor, contacta al usuario para coordinar la reunión.
+          `,
+          FECHA: data.FECHA,
+        }
+
+        // Send email through the same webhook with email endpoint
+        const emailUrl = `${webhookUrl}?endpoint=email`
+        console.log("=== EMAIL NOTIFICATION ===")
+        console.log("Email URL:", emailUrl)
+        console.log("Email data:", JSON.stringify(emailData, null, 2))
+
+        const emailResponse = await fetch(emailUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "User-Agent": "MeJubilo-App/1.0",
+          },
+          body: JSON.stringify(emailData),
+          redirect: "follow",
+        })
+
+        console.log("Email notification response status:", emailResponse.status)
+        const emailResponseText = await emailResponse.text()
+        console.log("Email notification response body:", emailResponseText)
+      } catch (emailError) {
+        console.error("Failed to send email notification:", emailError)
+        // Don't fail the main request if email fails
+      }
+    }
+
     return NextResponse.json({
       success: true,
       message: "Datos enviados correctamente",
       responseData,
+      debug: {
+        sentData: data,
+        responseStatus: response.status,
+        responseText: responseText,
+      },
     })
   } catch (error) {
     console.error("Error processing contact form:", error)

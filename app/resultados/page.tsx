@@ -11,6 +11,7 @@ import { Footer } from "@/components/footer"
 import { ContactModal } from "@/components/contact-modal"
 import { FeedbackModal } from "@/components/feedback-modal"
 import { InfoTooltip } from "@/components/info-tooltip"
+import { AdSenseBanner } from "@/components/adsense-banner"
 
 // Import the necessary icons at the top
 import { MessageCircle, Mail } from "lucide-react"
@@ -118,7 +119,7 @@ export default function ResultsPage() {
   }
 
   // Always show "Contrata una renta vitalicia con Nico" regardless of age or Renta Vitalicia
-  const buttonText = "Contrata una renta vitalicia con Nico"
+  const buttonText = "Quiero jubilar ahora"
   const handleMainButtonClick = () => {
     setIsContactModalOpen(true)
   }
@@ -334,6 +335,15 @@ export default function ResultsPage() {
                 </div>
               </div>
 
+              {/* AdSense Banner después de los resultados */}
+              <div className="py-6">
+                <AdSenseBanner
+                  adSlot="1111111111"
+                  className="w-full"
+                  style={{ display: "block", textAlign: "center", minHeight: "200px" }}
+                />
+              </div>
+
               {/* Total */}
               <div className="border-t pt-6">
                 <div className="flex justify-between items-center p-8 bg-orange-50 rounded-lg border-2 border-orange-200">
@@ -436,6 +446,15 @@ export default function ResultsPage() {
                     </button>
                   </div>
                 </div>
+              </div>
+
+              {/* AdSense Banner antes del disclaimer */}
+              <div className="py-6">
+                <AdSenseBanner
+                  adSlot="2222222222"
+                  className="w-full"
+                  style={{ display: "block", textAlign: "center", minHeight: "200px" }}
+                />
               </div>
 
               {/* Disclaimer */}
