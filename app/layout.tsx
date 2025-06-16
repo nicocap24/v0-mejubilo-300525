@@ -7,8 +7,9 @@ import { Suspense } from "react"
 
 const inter = Inter({ subsets: ["latin"] })
 
+// Cambiar el título del sitio
 export const metadata: Metadata = {
-  title: "MeJubilo - Planifica tu jubilación",
+  title: "Me Jubilo - Descubre tu pensión",
   description: "Obtén tu evaluación 100% GRATUITA y online para planificar tu jubilación",
     generator: 'v0.dev'
 }
@@ -25,112 +26,148 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-    // Enhanced MetaMask Error Suppression
-    (function() {
-      // Override console.error before any other scripts run
-      const originalConsoleError = console.error;
-      console.error = function(...args) {
-        const message = args.join(' ');
-        if (
-          message.includes('MetaMask') ||
-          message.includes('ChromeTransport') ||
-          message.includes('connectChrome') ||
-          message.includes('extension not found') ||
-          message.includes('ethereum') ||
-          message.includes('chrome-extension') ||
-          message.toLowerCase().includes('metamask')
-        ) {
-          // Completely suppress MetaMask-related errors
-          return;
-        }
-        originalConsoleError.apply(console, args);
-      };
+// Enhanced MetaMask Error Suppression
+(function() {
+  // Suppress console messages about MetaMask and ChromeTransport
+  const originalConsoleError = console.error;
+  console.error = function(...args) {
+    const message = args.join(' ');
+    if (
+      message.includes('MetaMask') ||
+      message.includes('ChromeTransport') ||
+      message.includes('connectChrome') ||
+      message.includes('extension not found') ||
+      message.includes('ethereum') ||
+      message.includes('chrome-extension') ||
+      message.toLowerCase().includes('metamask')
+    ) {
+      // Completely suppress MetaMask-related errors
+      return;
+    }
+    originalConsoleError.apply(console, args);
+  };
 
-      // Override console.warn as well
-      const originalConsoleWarn = console.warn;
-      console.warn = function(...args) {
-        const message = args.join(' ');
-        if (
-          message.includes('MetaMask') ||
-          message.includes('ChromeTransport') ||
-          message.includes('connectChrome') ||
-          message.includes('extension not found') ||
-          message.includes('ethereum')
-        ) {
-          return;
-        }
-        originalConsoleWarn.apply(console, args);
-      };
+  // Also suppress console.log messages related to MetaMask
+  const originalConsoleLog = console.log;
+  console.log = function(...args) {
+    const message = args.join(' ');
+    if (
+      message.includes('MetaMask') ||
+      message.includes('ChromeTransport') ||
+      message.includes('connectChrome') ||
+      message.includes('extension not found')
+    ) {
+      return;
+    }
+    originalConsoleLog.apply(console, args);
+  };
 
-      // Prevent unhandled promise rejections from MetaMask
-      window.addEventListener('unhandledrejection', function(event) {
-        if (
-          event.reason && 
-          (String(event.reason).includes('MetaMask') ||
-           String(event.reason).includes('ChromeTransport') ||
-           String(event.reason).includes('connectChrome') ||
-           String(event.reason).includes('extension not found'))
-        ) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-      }, true);
+  // Override console.warn as well
+  const originalConsoleWarn = console.warn;
+  console.warn = function(...args) {
+    const message = args.join(' ');
+    if (
+      message.includes('MetaMask') ||
+      message.includes('ChromeTransport') ||
+      message.includes('connectChrome') ||
+      message.includes('extension not found') ||
+      message.includes('ethereum')
+    ) {
+      return;
+    }
+    originalConsoleWarn.apply(console, args);
+  };
 
-      // Prevent general errors from MetaMask
-      window.addEventListener('error', function(event) {
-        if (
-          event.message && 
-          (event.message.includes('MetaMask') || 
-           event.message.includes('ChromeTransport') ||
-           event.message.includes('connectChrome') ||
-           event.message.includes('extension not found'))
-        ) {
-          event.preventDefault();
-          event.stopPropagation();
-          return false;
-        }
-      }, true);
+  // Prevent unhandled promise rejections from MetaMask
+  window.addEventListener('unhandledrejection', function(event) {
+    if (
+      event.reason && 
+      (String(event.reason).includes('MetaMask') ||
+       String(event.reason).includes('ChromeTransport') ||
+       String(event.reason).includes('connectChrome') ||
+       String(event.reason).includes('extension not found'))
+    ) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }, true);
 
-      // Mock ethereum object more comprehensively
-      if (typeof window !== 'undefined') {
-        // Prevent any attempts to access ethereum
-        Object.defineProperty(window, 'ethereum', {
-          get: function() {
-            return undefined;
-          },
-          set: function() {
-            // Ignore attempts to set ethereum
-          },
-          configurable: false,
-          enumerable: false
+  // Prevent general errors from MetaMask
+  window.addEventListener('error', function(event) {
+    if (
+      event.message && 
+      (event.message.includes('MetaMask') || 
+       event.message.includes('ChromeTransport') ||
+       event.message.includes('connectChrome') ||
+       event.message.includes('extension not found'))
+    ) {
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    }
+  }, true);
+
+  // Mock ethereum object more comprehensively
+  if (typeof window !== 'undefined') {
+    // Prevent any attempts to access ethereum
+    Object.defineProperty(window, 'ethereum', {
+      get: function() {
+        return undefined;
+      },
+      set: function() {
+        // Ignore attempts to set ethereum
+      },
+      configurable: false,
+      enumerable: false
+    });
+
+    // Also prevent web3 access
+    Object.defineProperty(window, 'web3', {
+      get: function() {
+        return undefined;
+      },
+      set: function() {
+        // Ignore attempts to set web3
+      },
+      configurable: false,
+      enumerable: false
+    });
+  }
+
+  // Suppress any chrome extension related errors
+  if (typeof chrome !== 'undefined' && chrome.runtime) {
+    const originalSendMessage = chrome.runtime.sendMessage;
+    chrome.runtime.sendMessage = function(...args) {
+      try {
+        return originalSendMessage.apply(this, args);
+      } catch (error) {
+        // Suppress chrome extension errors
+        return Promise.resolve();
+      }
+    };
+  }
+
+  // Specifically handle ChromeTransport errors
+  if (typeof window !== 'undefined') {
+    // Create a dummy ChromeTransport object to prevent errors
+    window.ChromeTransport = {
+      connect: function() {
+        return Promise.resolve({
+          disconnect: function() {},
+          on: function() {},
+          send: function() {}
         });
-
-        // Also prevent web3 access
-        Object.defineProperty(window, 'web3', {
-          get: function() {
-            return undefined;
-          },
-          set: function() {
-            // Ignore attempts to set web3
-          },
-          configurable: false,
-          enumerable: false
+      },
+      connectChrome: function() {
+        return Promise.resolve({
+          disconnect: function() {},
+          on: function() {},
+          send: function() {}
         });
       }
-
-      // Suppress any chrome extension related errors
-      if (typeof chrome !== 'undefined' && chrome.runtime) {
-        const originalSendMessage = chrome.runtime.sendMessage;
-        chrome.runtime.sendMessage = function(...args) {
-          try {
-            return originalSendMessage.apply(this, args);
-          } catch (error) {
-            // Suppress chrome extension errors
-            return Promise.resolve();
-          }
-        };
-      }
-    })();
+    };
+  }
+})();
   `,
           }}
         />

@@ -11,7 +11,6 @@ import { Footer } from "@/components/footer"
 import { ContactModal } from "@/components/contact-modal"
 import { FeedbackModal } from "@/components/feedback-modal"
 import { InfoTooltip } from "@/components/info-tooltip"
-import { AdSenseBanner } from "@/components/adsense-banner"
 
 // Import the necessary icons at the top
 import { MessageCircle, Mail } from "lucide-react"
@@ -144,7 +143,7 @@ export default function ResultsPage() {
         <Header />
 
         <div
-          className="flex-1 bg-cover bg-center bg-no-repeat py-12"
+          className="flex-1 bg-cover bg-center bg-no-repeat py-6"
           style={{
             backgroundImage: "url('/images/landscape-background.png')",
           }}
@@ -153,13 +152,13 @@ export default function ResultsPage() {
           <div className="absolute inset-0 bg-white/20"></div>
 
           <div className="relative z-10 container mx-auto px-4">
-            <Link href="/" className="inline-flex items-center text-gray-700 hover:text-gray-900 mb-6">
+            <Link href="/" className="inline-flex items-center text-gray-700 hover:text-gray-900 mb-4">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Volver al inicio
             </Link>
 
             <Card className="w-full max-w-md mx-auto bg-white/95 backdrop-blur-sm">
-              <CardContent className="p-8 text-center">
+              <CardContent className="p-6 text-center">
                 <h2 className="text-xl font-bold text-gray-800 mb-4">No hay datos para mostrar</h2>
                 <p className="text-gray-600 mb-6">
                   Parece que no tienes datos de evaluación. Por favor, completa el formulario primero.
@@ -272,7 +271,7 @@ export default function ResultsPage() {
       <Header />
 
       <div
-        className="flex-1 bg-cover bg-center bg-no-repeat py-12"
+        className="flex-1 bg-cover bg-center bg-no-repeat py-6"
         style={{
           backgroundImage: "url('/images/landscape-background.png')",
         }}
@@ -281,117 +280,108 @@ export default function ResultsPage() {
         <div className="absolute inset-0 bg-white/20"></div>
 
         <div className="relative z-10 container mx-auto px-4">
-          <Link href={recalculateUrl} className="inline-flex items-center text-gray-700 hover:text-gray-900 mb-6">
+          <Link href={recalculateUrl} className="inline-flex items-center text-gray-700 hover:text-gray-900 mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Volver al formulario
           </Link>
 
           <Card className="w-full max-w-2xl mx-auto bg-white/95 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle className="text-center text-3xl font-bold text-gray-800">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-center text-2xl font-bold text-gray-800">
                 {formData.nombre}, esta es tu pensión estimada si te jubilaras hoy 👀👇
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-8">
+            <CardContent className="space-y-4">
               {/* Individual Pension Components */}
-              <div className="grid gap-6">
-                <div className="flex justify-between items-center p-6 bg-blue-50 rounded-lg border">
+              <div className="grid gap-4">
+                <div className="flex justify-between items-center p-4 bg-blue-50 rounded-lg border">
                   <div className="flex items-center gap-3">
                     <div>
-                      <h3 className="font-semibold text-gray-800 text-xl">Renta Vitalicia</h3>
+                      <h3 className="font-semibold text-gray-800 text-lg">Renta Vitalicia</h3>
                     </div>
                     <InfoTooltip title="Renta Vitalicia" content={rentaVitaliciaInfo} />
                   </div>
                   <div className="text-right">
-                    <p className="text-3xl font-bold text-blue-600">{formatCurrency(results.rentaVitalicia)}</p>
-                    <p className="text-base text-gray-500">mensual</p>
+                    <p className="text-2xl font-bold text-blue-600">{formatCurrency(results.rentaVitalicia)}</p>
+                    <p className="text-sm text-gray-500">mensual</p>
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center p-6 bg-green-50 rounded-lg border">
+                <div className="flex justify-between items-center p-4 bg-green-50 rounded-lg border">
                   <div className="flex items-center gap-3">
                     <div>
-                      <h3 className="font-semibold text-gray-800 text-xl">PGU</h3>
+                      <h3 className="font-semibold text-gray-800 text-lg">PGU</h3>
                     </div>
                     <InfoTooltip title="Pensión Garantizada Universal (PGU)" content={pguInfo} />
                   </div>
                   <div className="text-right">
-                    <p className="text-3xl font-bold text-green-600">{formatCurrency(results.pgu)}</p>
-                    <p className="text-base text-gray-500">mensual</p>
+                    <p className="text-2xl font-bold text-green-600">{formatCurrency(results.pgu)}</p>
+                    <p className="text-sm text-gray-500">mensual</p>
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center p-6 bg-purple-50 rounded-lg border">
+                <div className="flex justify-between items-center p-4 bg-purple-50 rounded-lg border">
                   <div className="flex items-center gap-3">
                     <div>
-                      <h3 className="font-semibold text-gray-800 text-xl">Seguro Social</h3>
+                      <h3 className="font-semibold text-gray-800 text-lg">Seguro Social</h3>
                     </div>
                     <InfoTooltip title="Seguro Social" content={seguroSocialInfo} />
                   </div>
                   <div className="text-right">
-                    <p className="text-3xl font-bold text-purple-600">{formatCurrency(results.seguroSocial)}</p>
-                    <p className="text-base text-gray-500">mensual</p>
+                    <p className="text-2xl font-bold text-purple-600">{formatCurrency(results.seguroSocial)}</p>
+                    <p className="text-sm text-gray-500">mensual</p>
                   </div>
                 </div>
               </div>
 
-              {/* AdSense Banner después de los resultados */}
-              <div className="py-6">
-                <AdSenseBanner
-                  adSlot="1111111111"
-                  className="w-full"
-                  style={{ display: "block", textAlign: "center", minHeight: "200px" }}
-                />
-              </div>
-
               {/* Total */}
-              <div className="border-t pt-6">
-                <div className="flex justify-between items-center p-8 bg-orange-50 rounded-lg border-2 border-orange-200">
+              <div className="border-t pt-4">
+                <div className="flex justify-between items-center p-6 bg-orange-50 rounded-lg border-2 border-orange-200">
                   <div className="flex items-center gap-3">
                     <div>
-                      <h2 className="text-2xl font-bold text-gray-800">Total Pensión Mensual</h2>
-                      <p className="text-base text-gray-600">Suma de todos los beneficios</p>
+                      <h2 className="text-xl font-bold text-gray-800">Total Pensión Mensual</h2>
+                      <p className="text-sm text-gray-600">Suma de todos los beneficios</p>
                     </div>
                     <InfoTooltip title="Pensión Total" content={totalInfo} />
                   </div>
                   <div className="text-right">
-                    <p className="text-4xl font-bold text-orange-600">{formatCurrency(results.total)}</p>
-                    <p className="text-base text-gray-500">mensual</p>
+                    <p className="text-3xl font-bold text-orange-600">{formatCurrency(results.total)}</p>
+                    <p className="text-sm text-gray-500">mensual</p>
                   </div>
                 </div>
               </div>
 
               {/* Main Action Button - Changes based on age */}
-              <div className="flex flex-col items-center gap-6 pt-6">
+              <div className="flex flex-col items-center gap-4 pt-4">
                 {/* Added text above the button */}
-                <p className="text-xl text-gray-800 font-medium text-center">¿Ya quieres jubilar? 👇</p>
+                <p className="text-lg text-gray-800 font-medium text-center">¿Ya quieres jubilar? 👇</p>
 
                 <Button
-                  className="bg-orange-500 hover:bg-orange-600 text-white px-12 py-4 text-xl rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                  className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 text-lg rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
                   onClick={handleMainButtonClick}
                 >
                   {buttonText}
                 </Button>
 
                 <Link href={recalculateUrl}>
-                  <Button variant="outline" className="px-8 py-2 text-base">
+                  <Button variant="outline" className="px-6 py-2 text-sm">
                     Recalcular
                   </Button>
                 </Link>
 
                 {/* Social Sharing Section */}
-                <div className="flex flex-col items-center gap-4 pt-6 border-t border-gray-200 w-full">
-                  <p className="text-gray-600 text-base font-medium">Comparte con tus amigos:</p>
+                <div className="flex flex-col items-center gap-3 pt-4 border-t border-gray-200 w-full">
+                  <p className="text-gray-600 text-sm font-medium">Comparte con tus amigos:</p>
                   <div className="flex items-center gap-4">
                     {/* WhatsApp Share */}
                     <a
                       href={`https://wa.me/?text=${encodeURIComponent("Yo ya descubrí mi pensión y tu ? 😱. https://mejubilo.com")}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center w-12 h-12 bg-green-500 hover:bg-green-600 text-white rounded-full transition-colors transform hover:scale-110"
+                      className="flex items-center justify-center w-10 h-10 bg-green-500 hover:bg-green-600 text-white rounded-full transition-colors transform hover:scale-110"
                       title="Compartir en WhatsApp"
                     >
-                      <MessageCircle className="w-6 h-6" />
+                      <MessageCircle className="w-5 h-5" />
                     </a>
 
                     {/* X (Twitter) Share */}
@@ -399,14 +389,14 @@ export default function ResultsPage() {
                       href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("Yo ya descubrí mi pensión y tu ? 😱. https://mejubilo.com")}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center w-12 h-12 bg-black hover:bg-gray-800 text-white rounded-full transition-colors transform hover:scale-110"
+                      className="flex items-center justify-center w-10 h-10 bg-black hover:bg-gray-800 text-white rounded-full transition-colors transform hover:scale-110"
                       title="Compartir en X"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                         fill="currentColor"
-                        className="w-6 h-6"
+                        className="w-5 h-5"
                       >
                         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                       </svg>
@@ -415,51 +405,42 @@ export default function ResultsPage() {
                     {/* Gmail Share */}
                     <a
                       href={`mailto:?subject=${encodeURIComponent("Descubre tu pensión")}&body=${encodeURIComponent("Yo ya descubrí mi pensión y tu ? 😱.\n\nhttps://mejubilo.com")}`}
-                      className="flex items-center justify-center w-12 h-12 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors transform hover:scale-110"
+                      className="flex items-center justify-center w-10 h-10 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors transform hover:scale-110"
                       title="Compartir por email"
                     >
-                      <Mail className="w-6 h-6" />
+                      <Mail className="w-5 h-5" />
                     </a>
                   </div>
                 </div>
 
                 {/* Feedback Section */}
-                <div className="flex flex-col items-center gap-4 pt-6 border-t border-gray-200 w-full">
-                  <p className="text-gray-600 text-base font-medium">¿Qué te pareció esta herramienta?</p>
+                <div className="flex flex-col items-center gap-3 pt-4 border-t border-gray-200 w-full">
+                  <p className="text-gray-600 text-sm font-medium">¿Qué te pareció esta herramienta?</p>
                   <div className="flex items-center gap-4">
                     {/* Thumbs Up */}
                     <button
                       onClick={() => handleFeedbackClick("UP")}
-                      className="flex items-center justify-center w-12 h-12 bg-green-500 hover:bg-green-600 text-white rounded-full transition-colors transform hover:scale-110"
+                      className="flex items-center justify-center w-10 h-10 bg-green-500 hover:bg-green-600 text-white rounded-full transition-colors transform hover:scale-110"
                       title="Me gustó"
                     >
-                      <ThumbsUp className="w-6 h-6" />
+                      <ThumbsUp className="w-5 h-5" />
                     </button>
 
                     {/* Thumbs Down */}
                     <button
                       onClick={() => handleFeedbackClick("DOWN")}
-                      className="flex items-center justify-center w-12 h-12 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors transform hover:scale-110"
+                      className="flex items-center justify-center w-10 h-10 bg-red-500 hover:bg-red-600 text-white rounded-full transition-colors transform hover:scale-110"
                       title="No me gustó"
                     >
-                      <ThumbsDown className="w-6 h-6" />
+                      <ThumbsDown className="w-5 h-5" />
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* AdSense Banner antes del disclaimer */}
-              <div className="py-6">
-                <AdSenseBanner
-                  adSlot="2222222222"
-                  className="w-full"
-                  style={{ display: "block", textAlign: "center", minHeight: "200px" }}
-                />
-              </div>
-
               {/* Disclaimer */}
-              <div className="text-sm text-gray-500 text-center p-6 bg-gray-50 rounded-lg">
-                <p className="font-semibold mb-2">DISCLAIMER</p>
+              <div className="text-xs text-gray-500 text-center p-4 bg-gray-50 rounded-lg">
+                <p className="font-semibold mb-1">DISCLAIMER</p>
                 <p>
                   Estos cálculos son estimaciones basadas en la información entregada, pueden variar notoriamente. No
                   son datos oficiales.

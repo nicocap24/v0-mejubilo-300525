@@ -7,7 +7,7 @@ export function Header() {
     <header className="w-full bg-white/80 backdrop-blur-sm border-b border-gray-100">
       <div className="container mx-auto px-4 py-4">
         <nav className="flex items-center justify-between">
-          {/* Logo */}
+          {/* Logo - Aseguramos que siempre lleve al home */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
               <span className="text-2xl font-bold">
@@ -17,7 +17,7 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Navigation Menu - Only "Quiero jubilar" button */}
+          {/* Navigation Menu - Aseguramos que "Quiero jubilar" lleve al formulario */}
           <div className="flex items-center">
             <Link href="/evaluar">
               <Button

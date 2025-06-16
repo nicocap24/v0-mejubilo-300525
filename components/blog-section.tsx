@@ -33,14 +33,14 @@ export function BlogSection() {
   ]
 
   return (
-    <section className="py-8 px-4">
+    <section className="py-4 px-4">
       <div className="container mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-4">Artículos destacados</h2>
-        <p className="text-xl text-gray-600 text-center mb-12 max-w-3xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-2">Artículos destacados</h2>
+        <p className="text-xl text-gray-600 text-center mb-6 max-w-3xl mx-auto">
           Mantente informado sobre el sistema previsional chileno y cómo prepararte para una mejor jubilación
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {blogPosts.map((post) => (
             <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
               <div className="relative h-48 w-full">
@@ -52,13 +52,13 @@ export function BlogSection() {
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
-              <CardHeader>
+              <CardHeader className="pb-2">
                 <CardTitle className="text-xl font-bold text-gray-800">{post.title}</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="py-2">
                 <p className="text-gray-600">{post.description}</p>
               </CardContent>
-              <CardFooter>
+              <CardFooter className="pt-2">
                 <Link href={post.link} className="w-full">
                   <Button
                     variant="outline"

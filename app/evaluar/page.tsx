@@ -222,7 +222,7 @@ export default function EvaluationPage() {
       <Header />
 
       <div
-        className="flex-1 bg-cover bg-center bg-no-repeat py-12"
+        className="flex-1 bg-cover bg-center bg-no-repeat py-6"
         style={{
           backgroundImage: "url('/images/landscape-background.png')",
         }}
@@ -231,19 +231,19 @@ export default function EvaluationPage() {
         <div className="absolute inset-0 bg-white/20"></div>
 
         <div className="relative z-10 container mx-auto px-4">
-          <Link href="/" className="inline-flex items-center text-gray-700 hover:text-gray-900 mb-6">
+          <Link href="/" className="inline-flex items-center text-gray-700 hover:text-gray-900 mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Volver al inicio
           </Link>
 
           {/* Increased card size by 50%+ */}
           <Card className="w-full max-w-2xl mx-auto bg-white/95 backdrop-blur-sm">
-            <CardHeader className="pb-6">
-              <CardTitle className="text-center text-3xl font-bold text-gray-800">Ingresa tus datos</CardTitle>
+            <CardHeader className="pb-4">
+              <CardTitle className="text-center text-2xl font-bold text-gray-800">Ingresa tus datos</CardTitle>
             </CardHeader>
-            <CardContent className="px-8 pb-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-3 flex flex-col items-center">
+            <CardContent className="px-6 pb-6">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2 flex flex-col items-center">
                   <Label htmlFor="nombre" className="text-lg font-medium self-center">
                     Nombre *
                   </Label>
@@ -254,12 +254,12 @@ export default function EvaluationPage() {
                     value={formData.nombre}
                     onChange={(e) => handleInputChange("nombre", e.target.value)}
                     required
-                    className="h-14 text-lg text-center w-64 max-w-full"
+                    className="h-12 text-lg text-center w-64 max-w-full"
                     maxLength={20}
                   />
                 </div>
 
-                <div className="space-y-3 flex flex-col items-center">
+                <div className="space-y-2 flex flex-col items-center">
                   <Label htmlFor="saldoAFP" className="text-lg font-medium self-center">
                     Saldo en AFP *
                   </Label>
@@ -270,11 +270,11 @@ export default function EvaluationPage() {
                     value={formData.saldoAFP}
                     onChange={handleSaldoChange}
                     required
-                    className="h-14 text-lg text-center font-semibold w-64 max-w-full"
+                    className="h-12 text-lg text-center font-semibold w-64 max-w-full"
                   />
                 </div>
 
-                <div className="space-y-3 flex flex-col items-center">
+                <div className="space-y-2 flex flex-col items-center">
                   <Label htmlFor="fechaNacimiento" className="text-lg font-medium self-center">
                     Fecha de nacimiento *
                   </Label>
@@ -285,12 +285,12 @@ export default function EvaluationPage() {
                     value={formData.fechaNacimiento}
                     onChange={handleFechaNacimientoChange}
                     required
-                    className="h-14 text-lg text-center w-64 max-w-full"
+                    className="h-12 text-lg text-center w-64 max-w-full"
                     maxLength={10}
                   />
                 </div>
 
-                <div className="space-y-3 flex flex-col items-center">
+                <div className="space-y-2 flex flex-col items-center">
                   <Label htmlFor="email" className="text-lg font-medium self-center">
                     Email *
                   </Label>
@@ -301,14 +301,14 @@ export default function EvaluationPage() {
                     value={formData.email}
                     onChange={(e) => handleInputChange("email", e.target.value)}
                     required
-                    className="h-14 text-lg text-center w-64 max-w-full"
+                    className="h-12 text-lg text-center w-64 max-w-full"
                   />
                   <p className="text-sm text-gray-600 text-center max-w-md">
                     Acepto recibir más información sobre mi jubilación de vez en cuando
                   </p>
                 </div>
 
-                <div className="flex justify-center pt-6">
+                <div className="flex justify-center pt-4">
                   <Button
                     type="submit"
                     disabled={isSubmitting}

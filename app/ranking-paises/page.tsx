@@ -7,7 +7,6 @@ import { ArrowLeft, DollarSign, Shield, Heart, Thermometer, Users, Building, Fil
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { AdSenseBanner } from "@/components/adsense-banner"
 
 interface Country {
   id: string
@@ -254,15 +253,6 @@ export default function RankingPaisesPage() {
                 </Button>
               </div>
 
-              {/* AdSense Banner después de los filtros */}
-              <div className="py-4">
-                <AdSenseBanner
-                  adSlot="3333333333"
-                  className="w-full"
-                  style={{ display: "block", textAlign: "center", minHeight: "250px" }}
-                />
-              </div>
-
               {/* Countries Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {sortedCountries.map((country, index) => (
@@ -446,15 +436,6 @@ export default function RankingPaisesPage() {
                     )}
                   </div>
                 ))}
-              </div>
-
-              {/* AdSense Banner antes de la metodología */}
-              <div className="py-4">
-                <AdSenseBanner
-                  adSlot="4444444444"
-                  className="w-full"
-                  style={{ display: "block", textAlign: "center", minHeight: "250px" }}
-                />
               </div>
 
               {/* Methodology Section */}

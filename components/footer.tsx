@@ -95,6 +95,11 @@ export function Footer() {
                   Ranking países
                 </a>
               </li>
+              <li>
+                <a href="/invest" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Invest
+                </a>
+              </li>
             </ul>
           </div>
 
