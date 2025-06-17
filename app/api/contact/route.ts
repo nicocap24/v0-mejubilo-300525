@@ -20,6 +20,8 @@ export async function POST(request: Request) {
       endpoint = "ebook" // specific endpoint for ebook interest
     } else if (data.TIPO === "CONTACTO_JUBILACION") {
       endpoint = "contacto" // specific endpoint for retirement contact
+    } else if (data.TIPO === "CHARLA_EMPRESARIAL") {
+      endpoint = "charla" // specific endpoint for business talks
     }
 
     // Construct the full URL with query parameter
@@ -33,12 +35,13 @@ export async function POST(request: Request) {
     console.log("Data type:", data.TIPO)
     console.log("Endpoint:", endpoint)
 
-    // Log specific fields for CONTACTO_JUBILACION
-    if (data.TIPO === "CONTACTO_JUBILACION") {
-      console.log("=== CONTACTO_JUBILACION FIELDS ===")
-      console.log("PARTEPROCESO:", data.PARTEPROCESO)
-      console.log("METODOPREFERIDO:", data.METODOPREFERIDO)
-      console.log("DISPONIBILIDAD:", data.DISPONIBILIDAD)
+    // Log specific fields for CHARLA_EMPRESARIAL
+    if (data.TIPO === "CHARLA_EMPRESARIAL") {
+      console.log("=== CHARLA_EMPRESARIAL FIELDS ===")
+      console.log("NOMBRE_EMPRESA:", data.NOMBRE_EMPRESA)
+      console.log("NOMBRE_ENCARGADO:", data.NOMBRE_ENCARGADO)
+      console.log("EMAIL_ENCARGADO:", data.EMAIL_ENCARGADO)
+      console.log("MENSAJE:", data.MENSAJE)
     }
 
     // Send data to Google Sheets webhook with the required query parameter
@@ -131,6 +134,54 @@ Por favor, contacta al usuario para coordinar la reunión.
         // Send email through the same webhook with email endpoint
         const emailUrl = `${webhookUrl}?endpoint=email`
         console.log("=== EMAIL NOTIFICATION ===")
+        console.log("Email URL:", emailUrl)
+        console.log("Email data:", JSON.stringify(emailData, null, 2))
+
+        const emailResponse = await fetch(emailUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "User-Agent": "MeJubilo-App/1.0",
+          },
+          body: JSON.stringify(emailData),
+          redirect: "follow",
+        })
+
+        console.log("Email notification response status:", emailResponse.status)
+        const emailResponseText = await emailResponse.text()
+        console.log("Email notification response body:", emailResponseText)
+      } catch (emailError) {
+        console.error("Failed to send email notification:", emailError)
+        // Don't fail the main request if email fails
+      }
+    }
+
+    // If this is a business talk request with email flag, send notification email
+    if (data.TIPO === "CHARLA_EMPRESARIAL" && data.ENVIAR_EMAIL === "SI") {
+      try {
+        // Send email notification for business talk request
+        const emailData = {
+          TIPO: "EMAIL_NOTIFICACION",
+          DESTINATARIO: data.EMAIL_DESTINO || "hinicocapital@gmail.com",
+          ASUNTO: "Nueva solicitud de charla empresarial - Me Jubilo",
+          MENSAJE: `
+Nueva solicitud de charla empresarial recibida:
+
+🏢 Empresa: ${data.NOMBRE_EMPRESA}
+👤 Encargado: ${data.NOMBRE_ENCARGADO}
+📧 Email: ${data.EMAIL_ENCARGADO}
+💬 Mensaje: ${data.MENSAJE}
+🕐 Fecha: ${new Date(data.FECHA).toLocaleString("es-CL")}
+
+Por favor, contacta a la empresa para coordinar la charla.
+          `,
+          FECHA: data.FECHA,
+        }
+
+        // Send email through the same webhook with email endpoint
+        const emailUrl = `${webhookUrl}?endpoint=email`
+        console.log("=== EMAIL NOTIFICATION CHARLA ===")
         console.log("Email URL:", emailUrl)
         console.log("Email data:", JSON.stringify(emailData, null, 2))
 

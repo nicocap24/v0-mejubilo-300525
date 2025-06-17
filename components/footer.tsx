@@ -76,13 +76,13 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="/manual-del-retiro" className="text-gray-300 hover:text-orange-500 transition-colors">
-                  Manual del Retiro
+                <a href="/charlas-previsionales" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Charlas previsionales
                 </a>
               </li>
               <li>
-                <a href="/charlas-previsionales" className="text-gray-300 hover:text-orange-500 transition-colors">
-                  Charlas previsionales
+                <a href="/manual-del-retiro" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Manual del Retiro
                 </a>
               </li>
               <li>
