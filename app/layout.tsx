@@ -1,11 +1,11 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Montserrat } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "sonner"
 import { Suspense } from "react"
 
-const inter = Inter({ subsets: ["latin"] })
+const montserrat = Montserrat({ subsets: ["latin"] })
 
 // Cambiar el título del sitio
 export const metadata: Metadata = {
@@ -196,7 +196,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.png" type="image/svg+xml" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
-      <body className={inter.className}>
+      <body className={montserrat.className}>
         <Suspense fallback={null}>{children}</Suspense>
         <Toaster position="top-center" />
       </body>

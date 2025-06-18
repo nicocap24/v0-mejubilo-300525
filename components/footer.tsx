@@ -2,7 +2,7 @@ export function Footer() {
   return (
     <footer className="bg-gray-800 text-white py-12">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-2">
             <div className="mb-4">
@@ -29,7 +29,7 @@ export function Footer() {
             </div>
           </div>
 
-          {/* More Information */}
+          {/* Más información */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Más información</h3>
             <ul className="space-y-2">
@@ -44,8 +44,8 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="/contacto" className="text-gray-300 hover:text-orange-500 transition-colors">
-                  Contacto
+                <a href="/blog" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Blog
                 </a>
               </li>
               <li>
@@ -63,10 +63,15 @@ export function Footer() {
                   Docs
                 </a>
               </li>
+              <li>
+                <a href="/contacto" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Contacto
+                </a>
+              </li>
             </ul>
           </div>
 
-          {/* Productos */}
+          {/* Productos y Legal */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Productos</h3>
             <ul className="space-y-2">
@@ -90,22 +95,9 @@ export function Footer() {
                   Publicita con nosotros
                 </a>
               </li>
-              <li>
-                <a href="/ranking-paises" className="text-gray-300 hover:text-orange-500 transition-colors">
-                  Ranking países
-                </a>
-              </li>
-              <li>
-                <a href="/invest" className="text-gray-300 hover:text-orange-500 transition-colors">
-                  Invest
-                </a>
-              </li>
             </ul>
-          </div>
 
-          {/* Legal */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Legal</h3>
+            <h3 className="text-lg font-semibold mb-4 mt-6">Legal</h3>
             <ul className="space-y-2">
               <li>
                 <a href="/terminos-y-condiciones" className="text-gray-300 hover:text-orange-500 transition-colors">

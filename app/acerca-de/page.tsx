@@ -206,6 +206,17 @@ export default function AcercaDePage() {
               </div>
             </section>
 
+            {/* Invest Button */}
+            <div className="bg-blue-50 p-6 rounded-lg border border-blue-200 text-center">
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">¿Ya quieres jubilar?</h3>
+              <p className="text-gray-700 mb-4">
+                Descubre cuánto capital necesitarías para financiar tu jubilación ideal
+              </p>
+              <Link href="/invest">
+                <Button className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3">Invest</Button>
+              </Link>
+            </div>
+
             {/* Back Button */}
             <div className="flex justify-center pt-6">
               <Link href="/">

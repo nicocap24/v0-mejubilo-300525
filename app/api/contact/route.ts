@@ -13,21 +13,74 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Webhook URL not configured" }, { status: 500 })
     }
 
-    // Determine which endpoint to use based on data type
+    // Para CONTACTO_GENERAL, enviar directamente el email sin usar webhook separado
+    if (data.TIPO === "CONTACTO_GENERAL") {
+      console.log("=== CONTACTO_GENERAL - ENVIANDO DIRECTAMENTE ===")
+      console.log("Data:", JSON.stringify(data, null, 2))
+
+      // Usar el endpoint 'contacto' que ya maneja emails automáticamente
+      const fullUrl = `${webhookUrl}?endpoint=contacto`
+
+      console.log("URL completa:", fullUrl)
+
+      const response = await fetch(fullUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "User-Agent": "MeJubilo-App/1.0",
+        },
+        body: JSON.stringify(data),
+        redirect: "follow",
+      })
+
+      console.log("Response status:", response.status)
+      const responseText = await response.text()
+      console.log("Response body:", responseText)
+
+      // Para Google Apps Script, un 302 es normal
+      if (response.status === 302 || response.status === 200) {
+        return NextResponse.json({
+          success: true,
+          message: "Mensaje enviado correctamente",
+          debug: {
+            sentData: data,
+            responseStatus: response.status,
+            responseText: responseText,
+          },
+        })
+      }
+
+      if (!response.ok) {
+        console.error("Failed to send contact data:", response.status, response.statusText)
+        return NextResponse.json(
+          {
+            error: "Failed to submit contact form",
+            details: `Status: ${response.status}, Response: ${responseText}`,
+          },
+          { status: 500 },
+        )
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: "Mensaje enviado correctamente",
+      })
+    }
+
+    // Para otros tipos, usar la lógica original
     let endpoint = "form" // default endpoint
 
     if (data.TIPO === "EBOOK_INTERES") {
-      endpoint = "ebook" // specific endpoint for ebook interest
+      endpoint = "ebook"
     } else if (data.TIPO === "CONTACTO_JUBILACION") {
-      endpoint = "contacto" // specific endpoint for retirement contact
+      endpoint = "contacto"
     } else if (data.TIPO === "CHARLA_EMPRESARIAL") {
-      endpoint = "charla" // specific endpoint for business talks
+      endpoint = "charla"
     }
 
-    // Construct the full URL with query parameter
     const fullUrl = `${webhookUrl}?endpoint=${endpoint}`
 
-    // Enhanced logging for debugging
     console.log("=== CONTACT API DEBUG ===")
     console.log("Webhook URL:", webhookUrl)
     console.log("Full URL with query:", fullUrl)
@@ -35,16 +88,6 @@ export async function POST(request: Request) {
     console.log("Data type:", data.TIPO)
     console.log("Endpoint:", endpoint)
 
-    // Log specific fields for CHARLA_EMPRESARIAL
-    if (data.TIPO === "CHARLA_EMPRESARIAL") {
-      console.log("=== CHARLA_EMPRESARIAL FIELDS ===")
-      console.log("NOMBRE_EMPRESA:", data.NOMBRE_EMPRESA)
-      console.log("NOMBRE_ENCARGADO:", data.NOMBRE_ENCARGADO)
-      console.log("EMAIL_ENCARGADO:", data.EMAIL_ENCARGADO)
-      console.log("MENSAJE:", data.MENSAJE)
-    }
-
-    // Send data to Google Sheets webhook with the required query parameter
     const response = await fetch(fullUrl, {
       method: "POST",
       headers: {
@@ -53,14 +96,12 @@ export async function POST(request: Request) {
         "User-Agent": "MeJubilo-App/1.0",
       },
       body: JSON.stringify(data),
-      redirect: "follow", // Follow redirects automatically
+      redirect: "follow",
     })
 
-    // Log response details
     console.log("=== RESPONSE DEBUG ===")
     console.log("Response status:", response.status)
     console.log("Response URL:", response.url)
-    console.log("Response headers:", Object.fromEntries(response.headers.entries()))
 
     let responseText = ""
     try {
@@ -70,10 +111,8 @@ export async function POST(request: Request) {
       console.log("Could not read response text:", textError)
     }
 
-    // Handle different response statuses
     if (response.status === 302) {
       console.log("Received redirect (302), but data may have been processed successfully")
-      // For Google Apps Script web apps, a 302 might be normal
       return NextResponse.json({
         success: true,
         message: "Datos enviados correctamente",
@@ -99,116 +138,9 @@ export async function POST(request: Request) {
       )
     }
 
-    // Try to parse JSON response if possible
-    let responseData = null
-    try {
-      if (responseText) {
-        responseData = JSON.parse(responseText)
-      }
-    } catch (parseError) {
-      console.log("Response is not JSON:", responseText)
-    }
-
-    // If this is a retirement contact with email flag, send notification email
-    if (data.TIPO === "CONTACTO_JUBILACION" && data.ENVIAR_EMAIL === "SI") {
-      try {
-        // Send email notification using the new column names
-        const emailData = {
-          TIPO: "EMAIL_NOTIFICACION",
-          DESTINATARIO: data.EMAIL_DESTINO || "hinicocapital@gmail.com",
-          ASUNTO: "Nueva solicitud de jubilación - Me Jubilo",
-          MENSAJE: `
-Nueva solicitud de jubilación recibida:
-
-📋 Parte del proceso: ${data.PARTEPROCESO}
-📞 Método preferido: ${data.METODOPREFERIDO}
-📅 Disponibilidad: ${data.DISPONIBILIDAD}
-🕐 Fecha: ${new Date(data.FECHA).toLocaleString("es-CL")}
-🌐 Origen: ${data.ORIGEN}
-
-Por favor, contacta al usuario para coordinar la reunión.
-          `,
-          FECHA: data.FECHA,
-        }
-
-        // Send email through the same webhook with email endpoint
-        const emailUrl = `${webhookUrl}?endpoint=email`
-        console.log("=== EMAIL NOTIFICATION ===")
-        console.log("Email URL:", emailUrl)
-        console.log("Email data:", JSON.stringify(emailData, null, 2))
-
-        const emailResponse = await fetch(emailUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "User-Agent": "MeJubilo-App/1.0",
-          },
-          body: JSON.stringify(emailData),
-          redirect: "follow",
-        })
-
-        console.log("Email notification response status:", emailResponse.status)
-        const emailResponseText = await emailResponse.text()
-        console.log("Email notification response body:", emailResponseText)
-      } catch (emailError) {
-        console.error("Failed to send email notification:", emailError)
-        // Don't fail the main request if email fails
-      }
-    }
-
-    // If this is a business talk request with email flag, send notification email
-    if (data.TIPO === "CHARLA_EMPRESARIAL" && data.ENVIAR_EMAIL === "SI") {
-      try {
-        // Send email notification for business talk request
-        const emailData = {
-          TIPO: "EMAIL_NOTIFICACION",
-          DESTINATARIO: data.EMAIL_DESTINO || "hinicocapital@gmail.com",
-          ASUNTO: "Nueva solicitud de charla empresarial - Me Jubilo",
-          MENSAJE: `
-Nueva solicitud de charla empresarial recibida:
-
-🏢 Empresa: ${data.NOMBRE_EMPRESA}
-👤 Encargado: ${data.NOMBRE_ENCARGADO}
-📧 Email: ${data.EMAIL_ENCARGADO}
-💬 Mensaje: ${data.MENSAJE}
-🕐 Fecha: ${new Date(data.FECHA).toLocaleString("es-CL")}
-
-Por favor, contacta a la empresa para coordinar la charla.
-          `,
-          FECHA: data.FECHA,
-        }
-
-        // Send email through the same webhook with email endpoint
-        const emailUrl = `${webhookUrl}?endpoint=email`
-        console.log("=== EMAIL NOTIFICATION CHARLA ===")
-        console.log("Email URL:", emailUrl)
-        console.log("Email data:", JSON.stringify(emailData, null, 2))
-
-        const emailResponse = await fetch(emailUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "User-Agent": "MeJubilo-App/1.0",
-          },
-          body: JSON.stringify(emailData),
-          redirect: "follow",
-        })
-
-        console.log("Email notification response status:", emailResponse.status)
-        const emailResponseText = await emailResponse.text()
-        console.log("Email notification response body:", emailResponseText)
-      } catch (emailError) {
-        console.error("Failed to send email notification:", emailError)
-        // Don't fail the main request if email fails
-      }
-    }
-
     return NextResponse.json({
       success: true,
       message: "Datos enviados correctamente",
-      responseData,
       debug: {
         sentData: data,
         responseStatus: response.status,

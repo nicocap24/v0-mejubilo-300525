@@ -15,16 +15,16 @@ const GmailApp = GmailApp
 function doPost(e) {
   try {
     // Log de la solicitud recibida
-    console.log("Solicitud recibida: " + JSON.stringify(e.parameter))
-    console.log("Contenido POST: " + e.postData.contents)
+    console.log("🔄 Solicitud recibida: " + JSON.stringify(e.parameter))
+    console.log("🔄 Contenido POST: " + e.postData.contents)
 
     // Parsear los datos JSON
     const data = JSON.parse(e.postData.contents)
-    console.log("Datos parseados: " + JSON.stringify(data))
+    console.log("📋 Datos parseados: " + JSON.stringify(data))
 
     // Determinar qué endpoint usar basado en el parámetro de consulta
     const endpoint = e.parameter.endpoint || "form"
-    console.log("Endpoint: " + endpoint)
+    console.log("🎯 Endpoint: " + endpoint)
 
     let result
 
@@ -41,23 +41,120 @@ function doPost(e) {
       case "charla":
         result = processCharlaData(data)
         break
-      case "email":
-        result = sendEmailNotification(data)
-        break
       default:
         result = { error: "Endpoint desconocido" }
     }
 
+    console.log("✅ Resultado final: " + JSON.stringify(result))
+
     // Devolver respuesta
     return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON)
   } catch (error) {
-    console.error("Error en doPost: " + error.toString())
+    console.error("❌ Error en doPost: " + error.toString())
+    console.error("❌ Stack trace: " + error.stack)
     return ContentService.createTextOutput(
       JSON.stringify({
         error: error.toString(),
         stack: error.stack,
       }),
     ).setMimeType(ContentService.MimeType.JSON)
+  }
+}
+
+/**
+ * Procesa datos específicos de contacto - MEJORADO PARA CONTACTO GENERAL
+ */
+function processContactData(data) {
+  try {
+    console.log("🔄 === PROCESANDO DATOS DE CONTACTO ===")
+    console.log("📋 Data recibida: " + JSON.stringify(data))
+
+    const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(MAIN_SHEET_NAME)
+    if (!sheet) throw new Error("Hoja no encontrada: " + MAIN_SHEET_NAME)
+
+    // Obtener la última fila con datos
+    const lastRow = Math.max(1, sheet.getLastRow())
+    console.log("📊 Última fila: " + lastRow)
+
+    // Preparar los datos para insertar
+    const rowData = [
+      new Date(), // A: Timestamp
+      data.TIPO || "CONTACTO_GENERAL", // B: Tipo de entrada
+      "", // C: AFP
+      "", // D: Fondo
+      "", // E: Saldo
+      "", // F: Fecha de nacimiento
+      data.NOMBRE || "", // G: Nombre
+      data.EMAIL || "", // H: Email
+      "", // I: Suscrito
+      data.PARTEPROCESO || "", // J: Parte del proceso
+      data.METODOPREFERIDO || "", // K: Método preferido
+      data.DISPONIBILIDAD || "", // L: Disponibilidad
+      data.MENSAJE || "", // M: Mensaje
+    ]
+
+    console.log("📝 Datos a insertar: " + JSON.stringify(rowData))
+
+    // Insertar datos en la hoja
+    sheet.getRange(lastRow + 1, 1, 1, rowData.length).setValues([rowData])
+    console.log("✅ Datos guardados en fila " + (lastRow + 1))
+
+    // ENVIAR EMAIL INMEDIATAMENTE - SIN CONDICIONES
+    console.log("📧 === INICIANDO ENVÍO DE EMAIL ===")
+
+    const destinatario = "hinicocapital@gmail.com" // EMAIL FIJO
+    const asunto = "💬 NUEVO MENSAJE DE CONTACTO - Me Jubilo"
+
+    const mensaje = `🔔 NUEVO MENSAJE DE CONTACTO RECIBIDO
+
+👤 Nombre: ${data.NOMBRE || "No especificado"}
+📧 Email: ${data.EMAIL || "No especificado"}
+💬 Mensaje: ${data.MENSAJE || "Sin mensaje"}
+📅 Tipo: ${data.TIPO || "CONTACTO_GENERAL"}
+🕐 Fecha: ${new Date().toLocaleString("es-CL")}
+
+Por favor, responde al usuario lo antes posible.
+
+---
+Enviado automáticamente desde Me Jubilo (mejubilo.com)
+Sistema de notificaciones v2.0`
+
+    console.log("📧 Destinatario: " + destinatario)
+    console.log("📧 Asunto: " + asunto)
+    console.log("📧 Mensaje: " + mensaje)
+
+    try {
+      // ENVIAR EMAIL DIRECTAMENTE
+      console.log("📧 Enviando email...")
+      GmailApp.sendEmail(destinatario, asunto, mensaje)
+      console.log("✅ EMAIL ENVIADO EXITOSAMENTE a " + destinatario)
+
+      return {
+        success: true,
+        message: "Datos guardados y email enviado correctamente",
+        row: lastRow + 1,
+        emailSent: true,
+        emailTo: destinatario,
+      }
+    } catch (emailError) {
+      console.error("❌ ERROR ENVIANDO EMAIL: " + emailError.toString())
+      console.error("❌ Email stack: " + emailError.stack)
+
+      return {
+        success: true,
+        message: "Datos guardados pero error enviando email",
+        row: lastRow + 1,
+        emailSent: false,
+        emailError: emailError.toString(),
+      }
+    }
+  } catch (error) {
+    console.error("❌ Error en processContactData: " + error.toString())
+    console.error("❌ Stack trace: " + error.stack)
+    return {
+      error: error.toString(),
+      stack: error.stack,
+    }
   }
 }
 
@@ -89,14 +186,13 @@ function processCharlaData(data) {
     sheet.getRange(lastRow + 1, 1, 1, rowData.length).setValues([rowData])
     console.log("✅ Datos de charla guardados exitosamente en la fila " + (lastRow + 1))
 
-    // PASO 2: ENVIAR EMAIL INMEDIATAMENTE si tiene la flag
-    if (data.ENVIAR_EMAIL === "SI") {
-      console.log("📧 Enviando email de notificación...")
+    // PASO 2: ENVIAR EMAIL INMEDIATAMENTE
+    console.log("📧 Enviando email de notificación...")
 
-      const destinatario = data.EMAIL_DESTINO || "hinicocapital@gmail.com"
-      const asunto = "🏢 Nueva solicitud de charla empresarial - Me Jubilo"
+    const destinatario = "hinicocapital@gmail.com"
+    const asunto = "🏢 Nueva solicitud de charla empresarial - Me Jubilo"
 
-      const mensaje = `Nueva solicitud de charla empresarial recibida:
+    const mensaje = `Nueva solicitud de charla empresarial recibida:
 
 🏢 Empresa: ${data.NOMBRE_EMPRESA || "No especificado"}
 👤 Encargado: ${data.NOMBRE_ENCARGADO || "No especificado"}
@@ -109,14 +205,13 @@ Por favor, contacta a la empresa para coordinar la charla.
 ---
 Enviado desde Me Jubilo (mejubilo.com)`
 
-      try {
-        // ENVIAR EMAIL DIRECTAMENTE AQUÍ
-        GmailApp.sendEmail(destinatario, asunto, mensaje)
-        console.log("✅ Email enviado exitosamente a " + destinatario)
-      } catch (emailError) {
-        console.error("❌ Error enviando email: " + emailError.toString())
-        // No fallar la operación principal si el email falla
-      }
+    try {
+      // ENVIAR EMAIL DIRECTAMENTE AQUÍ
+      GmailApp.sendEmail(destinatario, asunto, mensaje)
+      console.log("✅ Email enviado exitosamente a " + destinatario)
+    } catch (emailError) {
+      console.error("❌ Error enviando email: " + emailError.toString())
+      // No fallar la operación principal si el email falla
     }
 
     return {
@@ -182,54 +277,6 @@ function processFormData(data) {
 }
 
 /**
- * Procesa datos específicos de contacto para jubilación
- */
-function processContactData(data) {
-  try {
-    console.log("Procesando datos de contacto: " + JSON.stringify(data))
-
-    const sheet = SpreadsheetApp.openById(SHEET_ID).getSheetByName(MAIN_SHEET_NAME)
-    if (!sheet) throw new Error("Hoja no encontrada: " + MAIN_SHEET_NAME)
-
-    // Obtener la última fila con datos
-    const lastRow = Math.max(1, sheet.getLastRow())
-
-    // Preparar los datos para insertar
-    const rowData = [
-      new Date(), // A: Timestamp
-      data.TIPO || "CONTACTO_JUBILACION", // B: Tipo de entrada
-      "", // C: AFP
-      "", // D: Fondo
-      "", // E: Saldo
-      "", // F: Fecha de nacimiento
-      "", // G: Nombre
-      "", // H: Email
-      "", // I: Suscrito
-      data.PARTEPROCESO || "", // J: Parte del proceso
-      data.METODOPREFERIDO || "", // K: Método preferido
-      data.DISPONIBILIDAD || "", // L: Disponibilidad
-    ]
-
-    // Insertar datos en la hoja
-    sheet.getRange(lastRow + 1, 1, 1, rowData.length).setValues([rowData])
-
-    console.log("Datos de contacto guardados exitosamente en la fila " + (lastRow + 1))
-
-    return {
-      success: true,
-      message: "Datos de contacto guardados correctamente",
-      row: lastRow + 1,
-    }
-  } catch (error) {
-    console.error("Error en processContactData: " + error.toString())
-    return {
-      error: error.toString(),
-      stack: error.stack,
-    }
-  }
-}
-
-/**
  * Procesa datos de interés en ebook
  */
 function processEbookData(data) {
@@ -271,80 +318,68 @@ function processEbookData(data) {
 }
 
 /**
- * Envía notificación por email (función separada - YA NO SE USA PARA CHARLAS)
+ * 🧪 FUNCIÓN DE PRUEBA PARA CONTACTO GENERAL - MEJORADA
  */
-function sendEmailNotification(data) {
-  try {
-    console.log("Enviando notificación por email: " + JSON.stringify(data))
+function testContactoGeneral() {
+  console.log("🧪 === INICIANDO PRUEBA DE CONTACTO GENERAL ===")
 
-    const destinatario = data.DESTINATARIO || "hinicocapital@gmail.com"
-    const asunto = data.ASUNTO || "Notificación de Me Jubilo"
-    const mensaje = data.MENSAJE || "Nueva notificación recibida"
-
-    // Enviar email
-    GmailApp.sendEmail(destinatario, asunto, mensaje)
-
-    console.log("Email enviado exitosamente a " + destinatario)
-
-    return {
-      success: true,
-      message: "Email enviado correctamente",
-      recipient: destinatario,
-    }
-  } catch (error) {
-    console.error("Error en sendEmailNotification: " + error.toString())
-    return {
-      error: error.toString(),
-      stack: error.stack,
-    }
-  }
-}
-
-/**
- * 🧪 FUNCIÓN DE PRUEBA PARA CHARLA CON EMAIL
- */
-function testCharlaConEmail() {
   const testData = {
-    TIPO: "CHARLA_EMPRESARIAL",
-    NOMBRE_EMPRESA: "Empresa Test",
-    NOMBRE_ENCARGADO: "Juan Pérez",
-    EMAIL_ENCARGADO: "juan@empresa.com",
-    MENSAJE: "Queremos una charla para nuestros empleados - ESTO ES UNA PRUEBA",
-    ENVIAR_EMAIL: "SI",
-    EMAIL_DESTINO: "hinicocapital@gmail.com",
+    TIPO: "CONTACTO_GENERAL",
+    NOMBRE: "Juan Pérez TEST",
+    EMAIL: "juan@test.com",
+    MENSAJE: "Hola, tengo una consulta sobre mi pensión - ESTO ES UNA PRUEBA MEJORADA",
   }
 
-  console.log("🧪 Iniciando prueba de charla con email...")
-  const result = processCharlaData(testData)
+  console.log("🧪 Datos de prueba: " + JSON.stringify(testData))
+
+  const result = processContactData(testData)
   console.log("🧪 Resultado del test: " + JSON.stringify(result))
 
   return result
 }
 
 /**
- * 🧪 FUNCIÓN DE PRUEBA SOLO PARA EMAIL
+ * 🧪 FUNCIÓN DE PRUEBA SOLO PARA EMAIL - MEJORADA
  */
 function testSoloEmail() {
   try {
-    console.log("🧪 Probando envío directo de email...")
+    console.log("🧪 === PROBANDO ENVÍO DIRECTO DE EMAIL ===")
 
     const destinatario = "hinicocapital@gmail.com"
-    const asunto = "🧪 PRUEBA - Email desde Google Apps Script"
-    const mensaje = `Esta es una prueba directa de email desde Google Apps Script.
+    const asunto = "🧪 PRUEBA DIRECTA - Email desde Google Apps Script"
+    const mensaje = `🔔 ESTA ES UNA PRUEBA DIRECTA DE EMAIL
 
-Fecha: ${new Date().toLocaleString("es-CL")}
+📅 Fecha: ${new Date().toLocaleString("es-CL")}
+🕐 Timestamp: ${new Date().toISOString()}
 
-Si recibes este email, significa que el sistema de envío funciona correctamente.
+Si recibes este email, significa que:
+✅ Google Apps Script puede enviar emails
+✅ La configuración de Gmail está correcta
+✅ El sistema de notificaciones funciona
 
 ---
-Prueba desde Me Jubilo`
+Prueba automática desde Me Jubilo
+Sistema de notificaciones v2.0`
+
+    console.log("📧 Enviando a: " + destinatario)
+    console.log("📧 Asunto: " + asunto)
 
     GmailApp.sendEmail(destinatario, asunto, mensaje)
-    console.log("✅ Email de prueba enviado exitosamente a " + destinatario)
+    console.log("✅ EMAIL DE PRUEBA ENVIADO EXITOSAMENTE")
 
-    return { success: true, message: "Email de prueba enviado" }
+    return {
+      success: true,
+      message: "Email de prueba enviado exitosamente",
+      timestamp: new Date().toISOString(),
+      recipient: destinatario,
+    }
   } catch (error) {
     console.error("❌ Error en prueba de email: " + error.toString())
-    return { error: error.toString() }
+    console.error("❌ Stack trace: " + error.stack)
+    return {
+      error: error.toString(),
+      stack: error.stack,
+      timestamp: new Date().toISOString(),
+    }
   }
 }

@@ -1,11 +1,78 @@
 "use client"
+
+import type React from "react"
+
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, Mail, Clock, MapPin } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { toast } from "sonner"
 
 export default function ContactoPage() {
+  const [formData, setFormData] = useState({
+    nombre: "",
+    email: "",
+    mensaje: "",
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+
+    try {
+      // Save contact data to Google Sheets and send email
+      const dataToSave = {
+        FECHA: new Date().toISOString(),
+        TIPO: "CONTACTO_GENERAL",
+        NOMBRE: formData.nombre,
+        EMAIL: formData.email,
+        MENSAJE: formData.mensaje,
+        ENVIAR_EMAIL: "SI",
+        EMAIL_DESTINO: "hinicocapital@gmail.com",
+      }
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSave),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to save contact data to Google Sheets")
+      }
+
+      toast.success("¡Mensaje enviado exitosamente! Te contactaremos pronto.")
+
+      // Reset form
+      setFormData({
+        nombre: "",
+        email: "",
+        mensaje: "",
+      })
+    } catch (error) {
+      console.error("Error saving contact data:", error)
+      toast.error("Error al enviar el mensaje. Por favor, intenta nuevamente.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -25,56 +92,71 @@ export default function ContactoPage() {
             Volver al inicio
           </Link>
 
-          {/* Centered Contact Information */}
+          {/* Centered Contact Form */}
           <div className="max-w-2xl mx-auto">
             <Card className="bg-white/95 backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-3xl font-bold text-gray-800 text-center">Contacto</CardTitle>
-                <p className="text-gray-600 text-center">
-                  ¿Tienes preguntas sobre tu jubilación? Estamos aquí para ayudarte.
-                </p>
+                <CardTitle className="text-3xl font-bold text-gray-800 text-center">
+                  ¿Te gustaría contactarnos?
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-8">
-                {/* Email */}
-                <div className="flex items-start space-x-4">
-                  <div className="bg-orange-100 p-3 rounded-lg">
-                    <Mail className="h-6 w-6 text-orange-600" />
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="nombre">Nombre *</Label>
+                    <Input
+                      id="nombre"
+                      type="text"
+                      placeholder="Tu nombre"
+                      value={formData.nombre}
+                      onChange={(e) => handleInputChange("nombre", e.target.value)}
+                      required
+                      className="h-12"
+                    />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800">Email</h3>
-                    <p className="text-gray-600">
-                      <a
-                        href="mailto:nico@pensionfi.com"
-                        className="text-orange-600 hover:text-orange-700 transition-colors"
-                      >
-                        nico@pensionfi.com
-                      </a>
-                    </p>
-                  </div>
-                </div>
 
-                {/* Horario de Atención */}
-                <div className="flex items-start space-x-4">
-                  <div className="bg-green-100 p-3 rounded-lg">
-                    <Clock className="h-6 w-6 text-green-600" />
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email *</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="tu@correo.com"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange("email", e.target.value)}
+                      required
+                      className="h-12"
+                    />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800">Horario de Atención</h3>
-                    <p className="text-gray-600">Atendemos de Lunes a Viernes de 9am a 17:00</p>
-                  </div>
-                </div>
 
-                {/* Location */}
-                <div className="flex items-start space-x-4">
-                  <div className="bg-blue-100 p-3 rounded-lg">
-                    <MapPin className="h-6 w-6 text-blue-600" />
+                  <div className="space-y-2">
+                    <Label htmlFor="mensaje">Mensaje *</Label>
+                    <Textarea
+                      id="mensaje"
+                      placeholder="Escribe tu mensaje aquí..."
+                      value={formData.mensaje}
+                      onChange={(e) => handleInputChange("mensaje", e.target.value)}
+                      required
+                      className="min-h-[120px]"
+                    />
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800">Ubicación</h3>
-                    <p className="text-gray-600">Hendaya 60, piso 7 (Barrio El Golf)</p>
-                    <p className="text-gray-600">Las Condes, Chile</p>
+
+                  <div className="flex justify-center">
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 text-lg"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></span>
+                          Enviando...
+                        </>
+                      ) : (
+                        "Enviar mensaje"
+                      )}
+                    </Button>
                   </div>
-                </div>
+                </form>
               </CardContent>
             </Card>
           </div>
