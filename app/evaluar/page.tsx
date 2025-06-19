@@ -2,8 +2,8 @@
 
 import type React from "react"
 
-import { useState, useCallback } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useCallback, useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { PageLayout } from "@/components/layouts/page-layout"
 import { PageCard } from "@/components/ui/page-card"
 import { Button } from "@/components/ui/button"
@@ -14,12 +14,25 @@ import { formatSaldo } from "@/utils/format"
 
 export default function EvaluationPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+
   const [formData, setFormData] = useState({
-    nombre: "",
-    saldoAFP: "",
-    email: "",
-    fechaNacimiento: "",
+    nombre: searchParams.get("nombre") || "",
+    saldoAFP: searchParams.get("saldoAFP") || "",
+    email: searchParams.get("email") || "",
+    fechaNacimiento: searchParams.get("fechaNacimiento") || "",
   })
+
+  const [isRecalculating, setIsRecalculating] = useState(false)
+
+  useEffect(() => {
+    if (searchParams.get("recalcular") === "true") {
+      setIsRecalculating(true)
+      // Limpiar el parámetro de la URL
+      const newUrl = window.location.pathname
+      window.history.replaceState({}, "", newUrl)
+    }
+  }, [searchParams])
 
   const { submitForm, isSubmitting } = useFormSubmission({
     onSuccess: () => {
@@ -60,7 +73,7 @@ export default function EvaluationPage() {
 
   return (
     <PageLayout>
-      <PageCard title="Ingresa tus datos" className="max-w-2xl">
+      <PageCard title={isRecalculating ? "Modifica tus datos y recalcula" : "Ingresa tus datos"} className="max-w-2xl">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2 flex flex-col items-center">
             <Label htmlFor="nombre" className="text-lg font-medium">

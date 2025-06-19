@@ -25,6 +25,7 @@
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-progress": "^1.0.3",
     "@radix-ui/react-radio-group": "^1.1.3",
+    "@radix-ui/react-select": "latest",
     "@radix-ui/react-slider": "latest",
     "@radix-ui/react-slot": "^1.0.2",
     "@types/node": "^20",

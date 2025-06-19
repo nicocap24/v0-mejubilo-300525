@@ -20,7 +20,11 @@ export function HeroSection() {
         <CardContent className="p-12 md:p-16 text-center">
           {/* Main Heading */}
           <h1 className="text-5xl md:text-7xl font-bold text-gray-800 mb-8 leading-tight">
-            ¿Ya quieres <span className="text-orange-500">jubilar</span>?
+            ¿Ya quieres{" "}
+            <span className="text-green-500" style={{ color: "#22c55e" }}>
+              jubilar
+            </span>
+            ?
           </h1>
 
           {/* Subtitle - Adjusted to move "si jubilarás hoy" to second line */}
@@ -30,13 +34,25 @@ export function HeroSection() {
             si jubilaras hoy 👇
           </p>
 
-          {/* CTA Button */}
+          {/* CTA Button - AHORA EN NARANJA VIBRANTE */}
           <Link href="/evaluar">
             <Button
               size="lg"
-              className="bg-red-500 hover:bg-red-600 text-white px-16 py-6 text-xl md:text-2xl rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              className="text-white px-16 py-6 text-xl md:text-2xl rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cta-button"
+              style={{
+                backgroundColor: "#f97316", // Naranja vibrante
+                boxShadow: "0 4px 15px rgba(249, 115, 22, 0.3)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "#ea580c" // Naranja más oscuro
+                e.currentTarget.style.boxShadow = "0 6px 25px rgba(249, 115, 22, 0.6)"
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "#f97316"
+                e.currentTarget.style.boxShadow = "0 4px 15px rgba(249, 115, 22, 0.3)"
+              }}
             >
-              Descubre cómo
+              Quiero jubilar
             </Button>
           </Link>
         </CardContent>

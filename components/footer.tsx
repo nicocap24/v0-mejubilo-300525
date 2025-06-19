@@ -8,7 +8,9 @@ export function Footer() {
             <div className="mb-4">
               <span className="text-2xl font-bold">
                 <span className="text-white">Me </span>
-                <span className="text-orange-500">Jubilo</span>
+                <span className="text-green-400" style={{ color: "#22c55e" }}>
+                  Jubilo
+                </span>
               </span>
             </div>
             <p className="text-gray-300 mb-4">Tu fuente de información previsional 100% clara y transparente</p>
@@ -34,22 +36,31 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4">Más información</h3>
             <ul className="space-y-2">
               <li>
-                <a href="/acerca-de" className="text-gray-300 hover:text-orange-500 transition-colors">
+                <a
+                  href="/acerca-de"
+                  className="text-gray-300 hover:text-green-400 transition-colors"
+                  style={{ "--tw-text-opacity": 1 }}
+                >
                   Acerca de
                 </a>
               </li>
               <li>
-                <a href="/preguntas-frecuentes" className="text-gray-300 hover:text-orange-500 transition-colors">
+                <a href="/nuestra-historia" className="text-gray-300 hover:text-green-400 transition-colors">
+                  Nuestra Historia
+                </a>
+              </li>
+              <li>
+                <a href="/preguntas-frecuentes" className="text-gray-300 hover:text-green-400 transition-colors">
                   Preguntas frecuentes
                 </a>
               </li>
               <li>
-                <a href="/blog" className="text-gray-300 hover:text-orange-500 transition-colors">
+                <a href="/blog" className="text-gray-300 hover:text-green-400 transition-colors">
                   Blog
                 </a>
               </li>
               <li>
-                <a href="/supuestos" className="text-gray-300 hover:text-orange-500 transition-colors">
+                <a href="/supuestos" className="text-gray-300 hover:text-green-400 transition-colors">
                   Supuestos
                 </a>
               </li>
@@ -58,13 +69,13 @@ export function Footer() {
                   href="https://github.com/nicocap24/v0-mejubilo-300525"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-orange-500 transition-colors"
+                  className="text-gray-300 hover:text-green-400 transition-colors"
                 >
                   Docs
                 </a>
               </li>
               <li>
-                <a href="/contacto" className="text-gray-300 hover:text-orange-500 transition-colors">
+                <a href="/contacto" className="text-gray-300 hover:text-green-400 transition-colors">
                   Contacto
                 </a>
               </li>
@@ -76,22 +87,22 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4">Productos</h3>
             <ul className="space-y-2">
               <li>
-                <a href="/rentas-vitalicias" className="text-gray-300 hover:text-orange-500 transition-colors">
+                <a href="/rentas-vitalicias" className="text-gray-300 hover:text-green-400 transition-colors">
                   Rentas Vitalicias
                 </a>
               </li>
               <li>
-                <a href="/charlas-previsionales" className="text-gray-300 hover:text-orange-500 transition-colors">
+                <a href="/charlas-previsionales" className="text-gray-300 hover:text-green-400 transition-colors">
                   Charlas previsionales
                 </a>
               </li>
               <li>
-                <a href="/manual-del-retiro" className="text-gray-300 hover:text-orange-500 transition-colors">
+                <a href="/manual-del-retiro" className="text-gray-300 hover:text-green-400 transition-colors">
                   Manual del Retiro
                 </a>
               </li>
               <li>
-                <a href="/publicita-con-nosotros" className="text-gray-300 hover:text-orange-500 transition-colors">
+                <a href="/publicita-con-nosotros" className="text-gray-300 hover:text-green-400 transition-colors">
                   Publicita con nosotros
                 </a>
               </li>
@@ -100,12 +111,12 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4 mt-6">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <a href="/terminos-y-condiciones" className="text-gray-300 hover:text-orange-500 transition-colors">
+                <a href="/terminos-y-condiciones" className="text-gray-300 hover:text-green-400 transition-colors">
                   Términos y condiciones
                 </a>
               </li>
               <li>
-                <a href="/politica-de-privacidad" className="text-gray-300 hover:text-orange-500 transition-colors">
+                <a href="/politica-de-privacidad" className="text-gray-300 hover:text-green-400 transition-colors">
                   Política de privacidad
                 </a>
               </li>
