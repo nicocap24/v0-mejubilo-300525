@@ -1,0 +1,226 @@
+/* TEMA 1: Cordillera Trust (Verde-azul) */
+.theme-cordillera {
+  --primary: #0f766e; /* Verde azulado (teal) */
+  --primary-hover: #0d9488;
+  --secondary: #1f2937; /* Gris carbón */
+  --accent: #10b981; /* Verde menta */
+  --neutral: #6b7280; /* Gris medio */
+  --warning: #f59e0b; /* Ámbar */
+  --success: #10b981;
+  --background: #f8fafc;
+  --foreground: #1f2937;
+  --card: #ffffff;
+  --border: #e5e7eb;
+}
+
+/* TEMA 2: Chilean Sky (Azul-rojo patriótico) */
+.theme-chilean {
+  --primary: #1e3a8a; /* Azul profundo */
+  --primary-hover: #1d4ed8;
+  --secondary: #dc2626; /* Rojo chileno */
+  --accent: #f8fafc; /* Blanco nieve */
+  --neutral: #475569; /* Gris pizarra */
+  --warning: #f59e0b; /* Ámbar */
+  --success: #059669; /* Verde bosque */
+  --background: #f8fafc;
+  --foreground: #1e3a8a;
+  --card: #ffffff;
+  --border: #e5e7eb;
+}
+
+/* TEMA 3: Sunset Confidence (Evolución naranja) */
+.theme-sunset {
+  --primary: #e67e22; /* Naranja cálido */
+  --primary-hover: #d35400;
+  --secondary: #2c3e50; /* Azul marino profundo */
+  --accent: #f39c12; /* Dorado */
+  --neutral: #34495e; /* Gris azulado */
+  --warning: #f39c12; /* Dorado */
+  --success: #27ae60; /* Verde esmeralda */
+  --background: #f8fafc;
+  --foreground: #2c3e50;
+  --card: #ffffff;
+  --border: #e5e7eb;
+}
+
+/* Aplicar variables CSS a los elementos */
+.themed-container {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.themed-container .bg-orange-500 {
+  background-color: var(--primary) !important;
+}
+
+.themed-container .hover\:bg-orange-600:hover {
+  background-color: var(--primary-hover) !important;
+}
+
+.themed-container .text-orange-500 {
+  color: var(--primary) !important;
+}
+
+.themed-container .text-orange-600 {
+  color: var(--primary-hover) !important;
+}
+
+.themed-container .bg-red-500 {
+  background-color: var(--secondary) !important;
+}
+
+.themed-container .hover\:bg-red-600:hover {
+  background-color: var(--secondary) !important;
+  filter: brightness(0.9);
+}
+
+.themed-container .border-orange-200 {
+  border-color: var(--primary) !important;
+  opacity: 0.3;
+}
+
+.themed-container .bg-orange-50 {
+  background-color: var(--primary) !important;
+  opacity: 0.1;
+}
+
+.themed-container .bg-white\/95 {
+  background-color: var(--card) !important;
+  opacity: 0.95;
+}
+
+.themed-container .text-gray-800 {
+  color: var(--foreground) !important;
+}
+
+.themed-container .text-gray-700 {
+  color: var(--neutral) !important;
+}
+
+.themed-container .border-gray-100 {
+  border-color: var(--border) !important;
+}
+
+/* Animaciones especiales para cada tema */
+.theme-cordillera .animate-dance {
+  animation: dance-button-teal 3s ease-in-out infinite, pulse-glow-teal 3s ease-in-out infinite;
+}
+
+.theme-chilean .animate-dance {
+  animation: dance-button-blue 3s ease-in-out infinite, pulse-glow-blue 3s ease-in-out infinite;
+}
+
+.theme-sunset .animate-dance {
+  animation: dance-button-orange 3s ease-in-out infinite, pulse-glow-orange 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow-teal {
+  0%,
+  100% {
+    box-shadow: 0 4px 15px rgba(15, 118, 110, 0.3);
+  }
+  50% {
+    box-shadow: 0 6px 25px rgba(15, 118, 110, 0.6);
+  }
+}
+
+@keyframes pulse-glow-blue {
+  0%,
+  100% {
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
+  }
+  50% {
+    box-shadow: 0 6px 25px rgba(30, 58, 138, 0.6);
+  }
+}
+
+@keyframes pulse-glow-orange {
+  0%,
+  100% {
+    box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+  }
+  50% {
+    box-shadow: 0 6px 25px rgba(230, 126, 34, 0.6);
+  }
+}
+
+@keyframes dance-button-teal {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  15% {
+    transform: translateY(-3px) rotate(-2deg);
+  }
+  30% {
+    transform: translateY(-5px) rotate(0deg);
+  }
+  45% {
+    transform: translateY(-3px) rotate(2deg);
+  }
+  60% {
+    transform: translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-2px) rotate(-1deg);
+  }
+  90% {
+    transform: translateY(-4px) rotate(1deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes dance-button-blue {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  15% {
+    transform: translateY(-3px) rotate(-2deg);
+  }
+  30% {
+    transform: translateY(-5px) rotate(0deg);
+  }
+  45% {
+    transform: translateY(-3px) rotate(2deg);
+  }
+  60% {
+    transform: translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-2px) rotate(-1deg);
+  }
+  90% {
+    transform: translateY(-4px) rotate(1deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes dance-button-orange {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  15% {
+    transform: translateY(-3px) rotate(-2deg);
+  }
+  30% {
+    transform: translateY(-5px) rotate(0deg);
+  }
+  45% {
+    transform: translateY(-3px) rotate(2deg);
+  }
+  60% {
+    transform: translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-2px) rotate(-1deg);
+  }
+  90% {
+    transform: translateY(-4px) rotate(1deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
