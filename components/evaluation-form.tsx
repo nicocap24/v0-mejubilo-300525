@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { X } from "lucide-react"
+import { sendSimulationEmail } from "@/utils/email-service"
 
 interface EvaluationFormProps {
   isOpen: boolean
@@ -20,10 +21,29 @@ export function EvaluationForm({ isOpen, onClose, onSubmit }: EvaluationFormProp
     nombre: "",
     saldoAFP: "",
     fechaNacimiento: "",
+    email: "",
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isEmailSending, setIsEmailSending] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    // Send emails in background (don't block the form submission)
+    if (formData.email) {
+      setIsEmailSending(true)
+
+      sendSimulationEmail({
+        nombre: formData.nombre,
+        email: formData.email,
+        saldoAFP: formData.saldoAFP,
+        fechaNacimiento: formData.fechaNacimiento,
+      }).finally(() => {
+        setIsEmailSending(false)
+      })
+    }
+
+    // Continue with existing form submission
     onSubmit(formData)
   }
 
@@ -82,12 +102,24 @@ export function EvaluationForm({ isOpen, onClose, onSubmit }: EvaluationFormProp
               />
             </div>
 
+            <div className="space-y-2">
+              <Label htmlFor="email">Email (opcional)</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="tu@email.com"
+                value={formData.email}
+                onChange={(e) => handleInputChange("email", e.target.value)}
+              />
+              <p className="text-xs text-gray-500">Te enviaremos los resultados por email</p>
+            </div>
+
             <div className="flex gap-3 pt-4">
               <Button type="button" variant="outline" className="flex-1" onClick={onClose}>
                 Cancelar
               </Button>
-              <Button type="submit" className="flex-1 bg-red-500 hover:bg-red-600 text-white">
-                Calcular
+              <Button type="submit" className="flex-1 bg-red-500 hover:bg-red-600 text-white" disabled={isEmailSending}>
+                {isEmailSending ? "Enviando..." : "Calcular"}
               </Button>
             </div>
           </form>

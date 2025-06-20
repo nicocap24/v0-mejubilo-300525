@@ -19,7 +19,7 @@ export default function ContactoPage() {
   return (
     <PageLayout>
       <div className="max-w-2xl mx-auto">
-        <PageCard title="¿Te gustaría contactarnos?">
+        <PageCard title="Contacto">
           <ContactForm type="CONTACTO_GENERAL" fields={contactFields} submitText="Enviar mensaje" />
         </PageCard>
       </div>

@@ -20,9 +20,9 @@ export function HeroSection() {
         <CardContent className="p-12 md:p-16 text-center">
           {/* Main Heading */}
           <h1 className="text-5xl md:text-7xl font-bold text-gray-800 mb-8 leading-tight">
-            ¿Ya quieres{" "}
+            Y si Me{" "}
             <span className="text-green-500" style={{ color: "#22c55e" }}>
-              jubilar
+              Jubilo
             </span>
             ?
           </h1>

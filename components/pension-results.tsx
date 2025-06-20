@@ -114,8 +114,11 @@ export function PensionResults({ isOpen, onClose, onBack, formData }: PensionRes
             <Button variant="outline" className="flex-1" onClick={onBack}>
               Recalcular
             </Button>
-            <Button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white" onClick={onClose}>
-              Contactar Asesor
+            <Button
+              className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+              onClick={() => window.open("https://calendly.com/nico-me-jubilo/30min", "_blank")}
+            >
+              Agendar videollamada
             </Button>
           </div>
 
