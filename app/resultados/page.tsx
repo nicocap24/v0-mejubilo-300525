@@ -118,10 +118,7 @@ export default function ResultsPage() {
   // Always show "Contrata una renta vitalicia con Nico" regardless of age or Renta Vitalicia
   const buttonText = "Quiero jubilar ahora"
   const handleMainButtonClick = () => {
-    window.open(
-      "https://calendly.com/nico-me-jubilo/30min?preview_source=et_card&month=2025-06&date=2025-06-20",
-      "_blank",
-    )
+    window.location.href = "/jubila-con-nico"
   }
 
   // Handle feedback button clicks

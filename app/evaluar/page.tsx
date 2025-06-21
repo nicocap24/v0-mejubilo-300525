@@ -112,11 +112,22 @@ export default function EvaluationPage() {
             </Label>
             <Input
               id="fechaNacimiento"
-              type="date"
+              type="text"
+              placeholder="DD/MM/AAAA"
               value={formData.fechaNacimiento}
-              onChange={(e) => handleInputChange("fechaNacimiento", e.target.value)}
+              onChange={(e) => {
+                let value = e.target.value.replace(/\D/g, "")
+                if (value.length >= 2) {
+                  value = value.substring(0, 2) + "/" + value.substring(2)
+                }
+                if (value.length >= 5) {
+                  value = value.substring(0, 5) + "/" + value.substring(5, 9)
+                }
+                handleInputChange("fechaNacimiento", value)
+              }}
               required
               className="h-12 text-lg text-center w-64 max-w-full"
+              maxLength={10}
             />
           </div>
 

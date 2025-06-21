@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { X, Phone } from "lucide-react"
+import { X } from "lucide-react"
 
 interface ContactModalProps {
   isOpen: boolean
@@ -32,13 +32,12 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
           <div className="space-y-4">
             <a
-              href="https://wa.me/56923935961"
+              href="https://calendly.com/nicolas-arrieta-pensionfi/asesoria-pensiones"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+              className="w-full inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
             >
-              <Phone className="w-5 h-5" />
-              WhatsApp
+              Agenda conmigo
             </a>
           </div>
 

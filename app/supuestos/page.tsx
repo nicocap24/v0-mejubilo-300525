@@ -88,8 +88,8 @@ export default function SupuestosPage() {
                 <li>• El beneficio es de 0,1 UF por año cotizado</li>
                 <li>
                   • No te pedimos años cotizados en esta simulación así que lo estimamos en base al saldo ingresado; Si
-                  tienes más de $50,000,000 de saldo se asume que cotizaste al menos 20 años, si tienes más de
-                  $100,000,000 se asume que has cotizado 25 años o más.
+                  tienes más de $25,000,000 de saldo se asume que cotizaste al menos 20 años, si tienes más de
+                  $50,000,000 se asume que has cotizado 25 años o más.
                 </li>
               </ul>
             </div>
@@ -123,8 +123,11 @@ export default function SupuestosPage() {
             <div className="bg-orange-50 p-6 rounded-lg border border-orange-200">
               <p className="text-gray-700">
                 Si tienes preguntas o sugerencias respecto de estos cálculos favor contáctanos acá:{" "}
-                <a href="mailto:nico@pensionfi.com" className="text-orange-600 hover:text-orange-700 font-semibold">
-                  nico@pensionfi.com
+                <a
+                  href="mailto:hinicocapital@gmail.com"
+                  className="text-orange-600 hover:text-orange-700 font-semibold"
+                >
+                  hinicocapital@gmail.com
                 </a>
               </p>
             </div>

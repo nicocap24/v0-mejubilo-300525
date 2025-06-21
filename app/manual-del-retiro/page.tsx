@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ArrowLeft, CheckCircle, BookOpen, Download, Users, Star } from "lucide-react"
+import { ArrowLeft, CheckCircle, BookOpen, Download, Users } from "lucide-react"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -92,7 +92,7 @@ export default function ManualDelRetiroPage() {
                     </div>
                     <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Manual del Retiro</h1>
                     <p className="text-xl text-gray-600 mb-6">
-                      La guía completa para planificar y ejecutar tu jubilación de manera exitosa en Chile
+                      Recibe el primer capítulo GRATIS. Pronto saldrá la PREVENTA.
                     </p>
                     <div className="flex items-center gap-4 text-gray-600">
                       <div className="flex items-center gap-2">
@@ -111,11 +111,13 @@ export default function ManualDelRetiroPage() {
                         <div className="absolute inset-4 bg-white rounded-lg flex flex-col justify-between p-4">
                           <div>
                             <h3 className="text-lg font-bold text-gray-800 mb-2">Manual del Retiro</h3>
-                            <p className="text-sm text-gray-600">Tu guía completa para una jubilación exitosa</p>
+                            <p className="text-sm text-gray-600 mb-4">
+                              Recibe el primer capítulo GRATIS. Pronto saldrá la PREVENTA.
+                            </p>
                           </div>
                           <div className="text-center">
                             <BookOpen className="h-12 w-12 text-orange-500 mx-auto mb-2" />
-                            <p className="text-xs text-gray-500">Por Me Jubilo</p>
+                            <p className="text-xs text-gray-500">Por: Nicolás Arrieta</p>
                           </div>
                         </div>
                       </div>
@@ -125,87 +127,16 @@ export default function ManualDelRetiroPage() {
               </CardContent>
             </Card>
 
-            {/* What's Included */}
-            <Card className="mb-8 bg-white/95 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="text-3xl font-bold text-gray-800 text-center">¿Qué incluye el manual?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h3 className="font-semibold text-gray-800">Planificación financiera para el retiro</h3>
-                        <p className="text-gray-600">Estrategias para maximizar tu ahorro previsional</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h3 className="font-semibold text-gray-800">Guía completa de rentas vitalicias</h3>
-                        <p className="text-gray-600">Cómo elegir y contratar la mejor opción para ti</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h3 className="font-semibold text-gray-800">Optimización de beneficios estatales</h3>
-                        <p className="text-gray-600">PGU, Seguro Social y otros beneficios disponibles</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h3 className="font-semibold text-gray-800">Casos prácticos y ejemplos reales</h3>
-                        <p className="text-gray-600">Situaciones reales con soluciones paso a paso</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h3 className="font-semibold text-gray-800">Impacto de la reforma previsional</h3>
-                        <p className="text-gray-600">Cómo te afectan los cambios y qué hacer al respecto</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h3 className="font-semibold text-gray-800">Herramientas de cálculo</h3>
-                        <p className="text-gray-600">Plantillas y calculadoras para planificar tu retiro</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h3 className="font-semibold text-gray-800">Estrategias de inversión</h3>
-                        <p className="text-gray-600">Cómo optimizar tus fondos de pensión</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <CheckCircle className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
-                      <div>
-                        <h3 className="font-semibold text-gray-800">Checklist de jubilación</h3>
-                        <p className="text-gray-600">Lista completa de tareas antes de jubilar</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Pre-order Form */}
+            {/* Registration Form */}
             <Card className="bg-white/95 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-3xl font-bold text-gray-800 text-center">
-                  {isSubscribed ? "¡Gracias por tu interés!" : "Regístrate para ser notificado"}
+                  {isSubscribed ? "¡Gracias por tu interés!" : "Regístrate para recibir el primer capítulo GRATIS"}
                 </CardTitle>
                 <p className="text-center text-gray-600 mt-2">
                   {isSubscribed
                     ? "Te contactaremos cuando el Manual del Retiro esté disponible."
-                    : "Sé el primero en conocer cuando esté disponible el Manual del Retiro"}
+                    : "Sé el primero en recibir el primer capítulo gratuito del Manual del Retiro"}
                 </p>
               </CardHeader>
               <CardContent>
@@ -246,11 +177,11 @@ export default function ManualDelRetiroPage() {
                           Registrando...
                         </>
                       ) : (
-                        "Notificarme cuando esté disponible"
+                        "Recibir primer capítulo GRATIS"
                       )}
                     </Button>
                     <p className="text-sm text-gray-500 text-center">
-                      Te enviaremos un correo cuando el manual esté listo. No spam, lo prometemos.
+                      Te enviaremos el primer capítulo y te notificaremos sobre la preventa. No spam, lo prometemos.
                     </p>
                   </form>
                 ) : (
@@ -259,7 +190,8 @@ export default function ManualDelRetiroPage() {
                       <CheckCircle className="h-8 w-8 text-green-500" />
                     </div>
                     <p className="text-lg text-gray-700">
-                      ¡Perfecto! Te notificaremos por correo cuando el Manual del Retiro esté disponible.
+                      ¡Perfecto! Te enviaremos el primer capítulo gratuito y te notificaremos sobre la preventa del
+                      Manual del Retiro.
                     </p>
                     <div className="flex justify-center gap-4">
                       <Link href="/evaluar">
@@ -270,52 +202,6 @@ export default function ManualDelRetiroPage() {
                     </div>
                   </div>
                 )}
-              </CardContent>
-            </Card>
-
-            {/* Testimonials Preview */}
-            <Card className="mt-8 bg-white/95 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold text-gray-800 text-center">
-                  Lo que dicen nuestros usuarios
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="text-center">
-                    <div className="flex justify-center mb-2">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                    <p className="text-gray-600 italic mb-2">
-                      "Me Jubilo me ayudó a entender finalmente cómo funciona mi pensión. Información clara y útil."
-                    </p>
-                    <p className="text-sm text-gray-500">- María, 58 años</p>
-                  </div>
-                  <div className="text-center">
-                    <div className="flex justify-center mb-2">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                    <p className="text-gray-600 italic mb-2">
-                      "Excelente herramienta para planificar la jubilación. Muy recomendable para todos."
-                    </p>
-                    <p className="text-sm text-gray-500">- Carlos, 62 años</p>
-                  </div>
-                  <div className="text-center">
-                    <div className="flex justify-center mb-2">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                    <p className="text-gray-600 italic mb-2">
-                      "Información transparente y fácil de entender. Exactamente lo que necesitaba."
-                    </p>
-                    <p className="text-sm text-gray-500">- Ana, 55 años</p>
-                  </div>
-                </div>
               </CardContent>
             </Card>
           </div>

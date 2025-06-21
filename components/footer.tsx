@@ -87,6 +87,11 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4">Productos</h3>
             <ul className="space-y-2">
               <li>
+                <a href="/jubila-con-nico" className="text-gray-300 hover:text-green-400 transition-colors">
+                  Jubila con Nico
+                </a>
+              </li>
+              <li>
                 <a href="/rentas-vitalicias" className="text-gray-300 hover:text-green-400 transition-colors">
                   Rentas Vitalicias
                 </a>

@@ -43,6 +43,51 @@
   --border: #d9f99d; /* Borde lima suave */
 }
 
+/* NUEVA VARIACIÓN 4: Verde Bosque + Amarillo Dorado */
+.theme-forest-gold {
+  --primary: #16a34a; /* Verde bosque */
+  --primary-hover: #15803d;
+  --secondary: #1f2937; /* Gris carbón */
+  --accent: #fbbf24; /* Amarillo dorado */
+  --neutral: #6b7280; /* Gris medio */
+  --warning: #f59e0b; /* Ámbar */
+  --success: #16a34a;
+  --background: #f0fdf4; /* Fondo verde muy suave */
+  --foreground: #1f2937;
+  --card: #ffffff;
+  --border: #bbf7d0; /* Borde verde suave */
+}
+
+/* NUEVA VARIACIÓN 5: Verde Esmeralda + Amarillo Limón */
+.theme-emerald-lemon {
+  --primary: #059669; /* Verde esmeralda */
+  --primary-hover: #047857;
+  --secondary: #374151; /* Gris pizarra */
+  --accent: #eab308; /* Amarillo limón */
+  --neutral: #6b7280; /* Gris medio */
+  --warning: #f59e0b; /* Ámbar */
+  --success: #059669;
+  --background: #ecfdf5; /* Fondo verde esmeralda suave */
+  --foreground: #374151;
+  --card: #ffffff;
+  --border: #a7f3d0; /* Borde verde esmeralda suave */
+}
+
+/* NUEVA VARIACIÓN 6: Verde Oliva + Amarillo Mostaza */
+.theme-olive-mustard {
+  --primary: #65a30d; /* Verde oliva */
+  --primary-hover: #4d7c0f;
+  --secondary: #1f2937; /* Gris carbón */
+  --accent: #d97706; /* Amarillo mostaza */
+  --neutral: #6b7280; /* Gris medio */
+  --warning: #f59e0b; /* Ámbar */
+  --success: #65a30d;
+  --background: #f7fee7; /* Fondo verde oliva suave */
+  --foreground: #1f2937;
+  --card: #ffffff;
+  --border: #d9f99d; /* Borde verde oliva suave */
+}
+
 /* Aplicar variables CSS a los elementos */
 .themed-container {
   background-color: var(--background);
@@ -66,11 +111,11 @@
 }
 
 .themed-container .bg-red-500 {
-  background-color: var(--secondary) !important;
+  background-color: var(--accent) !important;
 }
 
 .themed-container .hover\:bg-red-600:hover {
-  background-color: var(--secondary) !important;
+  background-color: var(--accent) !important;
   filter: brightness(0.9);
 }
 
@@ -114,6 +159,18 @@
   background: linear-gradient(135deg, #f7fee7 0%, #ecfccb 100%);
 }
 
+.theme-forest-gold {
+  background: linear-gradient(135deg, #f0fdf4 0%, #fef3c7 100%);
+}
+
+.theme-emerald-lemon {
+  background: linear-gradient(135deg, #ecfdf5 0%, #fef9c3 100%);
+}
+
+.theme-olive-mustard {
+  background: linear-gradient(135deg, #f7fee7 0%, #fed7aa 100%);
+}
+
 /* Animaciones especiales para cada variación */
 .theme-cordillera-mint .animate-dance {
   animation: dance-button-mint 3s ease-in-out infinite, pulse-glow-mint 3s ease-in-out infinite;
@@ -125,6 +182,18 @@
 
 .theme-cordillera-fresh .animate-dance {
   animation: dance-button-fresh 3s ease-in-out infinite, pulse-glow-fresh 3s ease-in-out infinite;
+}
+
+.theme-forest-gold .animate-dance {
+  animation: dance-button-forest 3s ease-in-out infinite, pulse-glow-forest 3s ease-in-out infinite;
+}
+
+.theme-emerald-lemon .animate-dance {
+  animation: dance-button-emerald 3s ease-in-out infinite, pulse-glow-emerald 3s ease-in-out infinite;
+}
+
+.theme-olive-mustard .animate-dance {
+  animation: dance-button-olive 3s ease-in-out infinite, pulse-glow-olive 3s ease-in-out infinite;
 }
 
 @keyframes pulse-glow-mint {
@@ -154,6 +223,36 @@
   }
   50% {
     box-shadow: 0 6px 25px rgba(34, 197, 94, 0.6);
+  }
+}
+
+@keyframes pulse-glow-forest {
+  0%,
+  100% {
+    box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+  }
+  50% {
+    box-shadow: 0 6px 25px rgba(22, 163, 74, 0.6);
+  }
+}
+
+@keyframes pulse-glow-emerald {
+  0%,
+  100% {
+    box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+  }
+  50% {
+    box-shadow: 0 6px 25px rgba(5, 150, 105, 0.6);
+  }
+}
+
+@keyframes pulse-glow-olive {
+  0%,
+  100% {
+    box-shadow: 0 4px 15px rgba(101, 163, 13, 0.3);
+  }
+  50% {
+    box-shadow: 0 6px 25px rgba(101, 163, 13, 0.6);
   }
 }
 
@@ -238,6 +337,87 @@
   }
 }
 
+@keyframes dance-button-forest {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  15% {
+    transform: translateY(-3px) rotate(-2deg);
+  }
+  30% {
+    transform: translateY(-5px) rotate(0deg);
+  }
+  45% {
+    transform: translateY(-3px) rotate(2deg);
+  }
+  60% {
+    transform: translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-2px) rotate(-1deg);
+  }
+  90% {
+    transform: translateY(-4px) rotate(1deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes dance-button-emerald {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  15% {
+    transform: translateY(-3px) rotate(-2deg);
+  }
+  30% {
+    transform: translateY(-5px) rotate(0deg);
+  }
+  45% {
+    transform: translateY(-3px) rotate(2deg);
+  }
+  60% {
+    transform: translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-2px) rotate(-1deg);
+  }
+  90% {
+    transform: translateY(-4px) rotate(1deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes dance-button-olive {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  15% {
+    transform: translateY(-3px) rotate(-2deg);
+  }
+  30% {
+    transform: translateY(-5px) rotate(0deg);
+  }
+  45% {
+    transform: translateY(-3px) rotate(2deg);
+  }
+  60% {
+    transform: translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-2px) rotate(-1deg);
+  }
+  90% {
+    transform: translateY(-4px) rotate(1deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
 /* Efectos especiales para el tema Aqua (similar a la imagen) */
 .theme-cordillera-aqua .themed-container {
   background: linear-gradient(135deg, #00ffcc 0%, #00d4aa 50%, #00b894 100%);
@@ -275,7 +455,10 @@
 /* Mejoras para legibilidad en fondos claros */
 .theme-cordillera-mint .text-gray-800,
 .theme-cordillera-aqua .text-gray-800,
-.theme-cordillera-fresh .text-gray-800 {
+.theme-cordillera-fresh .text-gray-800,
+.theme-forest-gold .text-gray-800,
+.theme-emerald-lemon .text-gray-800,
+.theme-olive-mustard .text-gray-800 {
   color: var(--foreground) !important;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
 }

@@ -56,6 +56,51 @@ const themes = [
     cons: ["Puede ser agresivo", "Menos formal"],
     inspiration: "Verde lima que transmite energía y éxito financiero",
   },
+  {
+    id: "forest-gold",
+    name: "Bosque Dorado",
+    description: "Verde bosque profundo con toques de amarillo dorado. Elegante y confiable.",
+    class: "theme-forest-gold",
+    colors: {
+      primary: "#16A34A",
+      secondary: "#1F2937",
+      accent: "#FBBF24",
+      neutral: "#6B7280",
+    },
+    pros: ["Muy elegante", "Transmite confianza", "Combinación clásica"],
+    cons: ["Puede ser conservador", "Menos moderno"],
+    inspiration: "Inspirado en bosques chilenos con toques dorados de prosperidad",
+  },
+  {
+    id: "emerald-lemon",
+    name: "Esmeralda Limón",
+    description: "Verde esmeralda vibrante con amarillo limón. Fresco y dinámico.",
+    class: "theme-emerald-lemon",
+    colors: {
+      primary: "#059669",
+      secondary: "#374151",
+      accent: "#EAB308",
+      neutral: "#6B7280",
+    },
+    pros: ["Muy dinámico", "Llamativo", "Transmite energía"],
+    cons: ["Puede ser muy intenso", "Difícil de leer"],
+    inspiration: "Combinación vibrante que evoca crecimiento y prosperidad",
+  },
+  {
+    id: "olive-mustard",
+    name: "Oliva Mostaza",
+    description: "Verde oliva terroso con amarillo mostaza. Natural y cálido.",
+    class: "theme-olive-mustard",
+    colors: {
+      primary: "#65A30D",
+      secondary: "#1F2937",
+      accent: "#D97706",
+      neutral: "#6B7280",
+    },
+    pros: ["Natural y orgánico", "Cálido", "Fácil para los ojos"],
+    cons: ["Puede ser opaco", "Menos moderno"],
+    inspiration: "Colores terrosos que transmiten estabilidad y crecimiento natural",
+  },
 ]
 
 export default function TemasPage() {
@@ -104,14 +149,14 @@ export default function TemasPage() {
           <Card className="mb-8">
             <CardHeader>
               <CardTitle className="text-center text-2xl font-bold flex items-center justify-center gap-2">
-                <Leaf className="h-6 w-6 text-green-500" />🌿 Variaciones Cordillera Trust - Verdes Claros
+                <Leaf className="h-6 w-6 text-green-500" />🌿 Variaciones Cordillera - Verdes y Amarillos
               </CardTitle>
               <p className="text-center text-gray-600">
-                3 variaciones de verde más claro y vibrante, incluyendo el verde de tu imagen
+                6 variaciones incluyendo combinaciones verde-amarillo y el verde de tu imagen
               </p>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {themes.map((theme) => (
                   <div
                     key={theme.id}
@@ -140,6 +185,9 @@ export default function TemasPage() {
                       <h3 className="font-bold text-lg">{theme.name}</h3>
                       {theme.id === "cordillera-aqua" && (
                         <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">🎯 Tu Verde</span>
+                      )}
+                      {(theme.id === "forest-gold" || theme.id === "emerald-lemon" || theme.id === "olive-mustard") && (
+                        <span className="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">🆕 Nuevo</span>
                       )}
                     </div>
 
@@ -232,6 +280,13 @@ export default function TemasPage() {
                     🎯 Con tu verde favorito
                   </span>
                 )}
+                {(selectedTheme === "forest-gold" ||
+                  selectedTheme === "emerald-lemon" ||
+                  selectedTheme === "olive-mustard") && (
+                  <span className="bg-yellow-100 text-yellow-800 text-sm px-3 py-1 rounded-full">
+                    🆕 Verde + Amarillo
+                  </span>
+                )}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
@@ -249,15 +304,15 @@ export default function TemasPage() {
           <Card className="mb-8">
             <CardHeader>
               <CardTitle className="text-center text-2xl font-bold flex items-center justify-center gap-2">
-                <Leaf className="h-6 w-6 text-green-500" />🔍 Comparación de Verdes Cordillera
+                <Leaf className="h-6 w-6 text-green-500" />🔍 Comparación de Temas Cordillera
               </CardTitle>
               <p className="text-center text-gray-600">
-                Ve las 3 variaciones de verde lado a lado - desde suave hasta vibrante
+                Ve las 6 variaciones lado a lado - verdes puros y combinaciones verde-amarillo
               </p>
             </CardHeader>
           </Card>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {themes.map((theme) => (
               <Card key={theme.id} className="overflow-hidden">
                 <CardHeader className="pb-2">
@@ -279,6 +334,9 @@ export default function TemasPage() {
                     {theme.name}
                     {theme.id === "cordillera-aqua" && (
                       <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">🎯</span>
+                    )}
+                    {(theme.id === "forest-gold" || theme.id === "emerald-lemon" || theme.id === "olive-mustard") && (
+                      <span className="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">🆕</span>
                     )}
                   </CardTitle>
                   <p className="text-sm text-gray-600">{theme.description}</p>
@@ -303,20 +361,20 @@ export default function TemasPage() {
       {/* Feedback Section */}
       <div className="bg-white border-t py-8">
         <div className="container mx-auto px-4 text-center">
-          <h3 className="text-xl font-bold mb-4">¿Cuál de estos verdes te gusta más? 🌿</h3>
+          <h3 className="text-xl font-bold mb-4">¿Cuál de estos temas te gusta más? 🌿</h3>
           <p className="text-gray-600 mb-6">
-            Especialmente el <strong>Cordillera Aqua</strong> que usa el verde de tu imagen
+            Ahora con <strong>3 nuevas combinaciones verde-amarillo</strong> además del verde de tu imagen
           </p>
           <div className="flex justify-center gap-4">
             <a
-              href="mailto:nico@pensionfi.com?subject=Feedback%20Verdes%20Cordillera%20-%20Me%20Jubilo&body=Mi%20variación%20de%20verde%20favorita%20es:%20"
+              href="mailto:hinicocapital@gmail.com?subject=Feedback%20Temas%20Cordillera%20-%20Me%20Jubilo&body=Mi%20tema%20favorito%20es:%20"
               className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition-colors flex items-center gap-2"
             >
               <Leaf className="h-4 w-4" />
               Enviar Feedback por Email
             </a>
             <a
-              href="https://wa.me/56923935961?text=Hola,%20vi%20las%20variaciones%20de%20verde%20para%20Me%20Jubilo%20y%20mi%20favorita%20es:"
+              href="https://wa.me/56923935961?text=Hola,%20vi%20los%20temas%20para%20Me%20Jubilo%20y%20mi%20favorito%20es:"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors flex items-center gap-2"
