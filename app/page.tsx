@@ -1,117 +1,58 @@
 "use client"
+import { Countdown } from "../components/countdown"
 
-import { useState } from "react"
-import Sidebar from "@/components/sidebar"
-import BankAnimation from "@/components/bank-animation"
-import LearnSection from "@/components/learn-section"
-import PensionCalculator from "@/components/pension-calculator"
-import GovernancePortal from "@/components/governance-portal"
-import SwapPage from "@/components/swap-page"
-import { Button } from "@/components/ui/button"
-
-type ActiveSection = 'home' | 'learn' | 'invest' | 'retire' | 'contribute' | 'swap'
-
-export default function HomePage() {
-  const [language, setLanguage] = useState<'es' | 'en'>('es')
-  const [activeSection, setActiveSection] = useState<ActiveSection>('home')
-
-  const translations = {
-    es: {
-      buyCapital: "Compra $CAPITAL",
-      socialSecurityDead: "La seguridad social está muerta",
-      learn: "Aprende",
-      invest: "Invierte",
-      retire: "Jubila",
-      contribute: "Contribuye",
-      clickToDestroy: "Haz clic para destruir el banco"
-    },
-    en: {
-      buyCapital: "Buy $CAPITAL",
-      socialSecurityDead: "Social security is dead",
-      learn: "Learn",
-      invest: "Invest",
-      retire: "Retire",
-      contribute: "Contribute",
-      clickToDestroy: "Click to destroy the bank"
-    }
-  }
-
-  const t = translations[language]
-
-  const handleSectionClick = (section: ActiveSection) => {
-    setActiveSection(section)
-  }
-
-  const renderMainContent = () => {
-    switch (activeSection) {
-      case 'learn':
-        return <LearnSection language={language} />
-      case 'retire':
-        return <PensionCalculator language={language} />
-      case 'contribute':
-        return <GovernancePortal language={language} />
-      case 'swap':
-        return <SwapPage language={language} />
-      default:
-        return (
-          <div className="flex-1 flex flex-col items-center justify-center min-h-[80vh]">
-            <BankAnimation />
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-800 text-center mt-8 px-4">
-              {t.socialSecurityDead}
-            </h1>
-            <p className="text-lg text-gray-600 mt-4">{t.clickToDestroy}</p>
-          </div>
-        )
-    }
-  }
+export default function ComingSoonPage() {
+  // Set launch date to this Friday at 18:00 Santiago time
+  const launchDate = new Date()
+  const today = launchDate.getDay()
+  const daysUntilFriday = today === 5 ? 7 : (5 - today + 7) % 7
+  launchDate.setDate(launchDate.getDate() + daysUntilFriday)
+  launchDate.setHours(18, 0, 0, 0)
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Background */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center"
+    <div className="min-h-screen flex items-center justify-center p-4 relative">
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "linear-gradient(to bottom, #87CEEB 0%, #87CEEB 60%, #90EE90 60%, #228B22 100%)"
+          backgroundImage:
+            "url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Captura%20de%20Pantalla%202025-05-09%20a%20la%28s%29%2013.05.36-SDUh5FuzDx2al6gPGsLX0XMC0uzvq9.png')",
         }}
       />
-      
-      {/* Clouds */}
-      <div className="absolute inset-0">
-        <div className="absolute top-10 left-1/4 w-20 h-12 bg-white rounded-full opacity-80 animate-pulse"></div>
-        <div className="absolute top-16 right-1/3 w-16 h-10 bg-white rounded-full opacity-70 animate-pulse delay-1000"></div>
-        <div className="absolute top-8 right-1/4 w-24 h-14 bg-white rounded-full opacity-60 animate-pulse delay-2000"></div>
-      </div>
 
-      {/* Header */}
-      <header className="relative z-10 flex justify-between items-center p-6">
-        <Button 
-          onClick={() => setActiveSection('home')}
-          variant="ghost"
-          className="text-gray-800 hover:text-gray-600"
-        >
-          🏠 Inicio
-        </Button>
-        <Button 
-          onClick={() => setActiveSection('swap')}
-          className="bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold border-2 border-gray-600"
-        >
-          {t.buyCapital}
-        </Button>
-      </header>
+      {/* Content */}
+      <div className="relative z-10 max-w-2xl w-full">
+        <div className="bg-gray-100 rounded-3xl p-8 md:p-12 shadow-2xl border-4 border-gray-800">
+          {/* Logo - Centered */}
+          <div className="flex justify-center mb-8">
+            <div className="bg-white border-2 border-gray-800 rounded-lg px-6 py-3 shadow-lg">
+              <h2 className="text-2xl font-bold">
+                <span className="text-gray-700">Me </span>
+                <span className="text-orange-500">Jubilo</span>
+              </h2>
+            </div>
+          </div>
 
-      {/* Main Content */}
-      <div className="flex relative z-10">
-        {/* Sidebar */}
-        <Sidebar 
-          language={language} 
-          setLanguage={setLanguage}
-          translations={t}
-          activeSection={activeSection}
-          onSectionClick={handleSectionClick}
-        />
+          {/* Main Text - Centered */}
+          <div className="space-y-6 mb-8 text-center">
+            <h1 className="text-3xl md:text-4xl font-bold">
+              <span className="text-orange-500">Se viene algo </span>
+              <span className="text-gray-800">increíble...</span>
+            </h1>
 
-        {/* Center Content */}
-        {renderMainContent()}
+            <p className="text-gray-600 text-lg leading-relaxed">Abriremos el sistema AFP para las masas, atentos.</p>
+          </div>
+
+          {/* Countdown */}
+          <div className="mb-8">
+            <Countdown targetDate={launchDate} />
+          </div>
+
+          {/* Footer - Centered */}
+          <div className="text-center">
+            <p className="text-sm text-gray-500">© 2024 Me Jubilo. Todos los derechos reservados.</p>
+          </div>
+        </div>
       </div>
     </div>
   )
