@@ -2,12 +2,10 @@
 import { Countdown } from "../components/countdown"
 
 export default function ComingSoonPage() {
-  // Set launch date to this Friday at 18:00 Santiago time
-  const launchDate = new Date()
-  const today = launchDate.getDay()
-  const daysUntilFriday = today === 5 ? 7 : (5 - today + 7) % 7
-  launchDate.setDate(launchDate.getDate() + daysUntilFriday)
-  launchDate.setHours(18, 0, 0, 0)
+  // Set launch date to August 18, 2025 at 18:00 Santiago time
+  const launchDate = new Date("2025-08-18T18:00:00")
+  // Adjust for Santiago timezone (UTC-3)
+  launchDate.setHours(launchDate.getHours() + 3)
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative">
