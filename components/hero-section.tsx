@@ -1,53 +1,69 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+import { useState } from "react"
 import Link from "next/link"
-import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 
 export function HeroSection() {
+  const [showNoOption, setShowNoOption] = useState(false)
+
   return (
-    <div className="relative min-h-screen flex items-center justify-center">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/new-landscape-background.png"
-          alt="Paisaje de colinas verdes"
-          fill
-          className="object-cover"
-          priority
-        />
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 w-full max-w-2xl mx-auto px-4">
-        <Card className="bg-white/95 backdrop-blur-sm shadow-2xl border-0">
-          <CardContent className="p-8 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Y si Me <span className="text-orange-500">Jubilo</span>?
-            </h1>
-
-            <p className="text-xl text-gray-600 mb-8">Ya te quieres jubilar ? 👇</p>
+    <section
+      className="min-h-screen flex items-center justify-center relative"
+      style={{
+        backgroundImage: "url('/images/new-landscape-background.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <div className="container mx-auto px-4 text-center">
+        {!showNoOption ? (
+          <Card className="max-w-2xl mx-auto p-8 bg-white/95 backdrop-blur-sm shadow-xl">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">Ya te quieres jubilar ? 👇</h1>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/simulador-simple" className="flex-1">
-                <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white text-xl py-4 px-8 rounded-lg font-bold transition-colors">
+              <Link href="/simulador-simple">
+                <Button
+                  size="lg"
+                  className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 text-xl font-semibold rounded-lg transition-colors w-full sm:w-auto"
+                >
                   Si 😎
                 </Button>
               </Link>
 
-              <Link href="/no-todavia" className="flex-1">
-                <Button
-                  variant="outline"
-                  className="w-full border-gray-300 text-gray-700 hover:bg-gray-50 text-xl py-4 px-8 rounded-lg font-bold transition-colors bg-transparent"
-                >
-                  No todavía 😒
-                </Button>
-              </Link>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-gray-400 text-gray-700 hover:bg-gray-100 px-8 py-4 text-xl font-semibold rounded-lg transition-colors w-full sm:w-auto bg-transparent"
+                onClick={() => setShowNoOption(true)}
+              >
+                No todavía 😒
+              </Button>
             </div>
-          </CardContent>
-        </Card>
+          </Card>
+        ) : (
+          <Card className="max-w-2xl mx-auto p-8 bg-white/95 backdrop-blur-sm shadow-xl">
+            <div className="text-center">
+              <img
+                src="/images/working-forever-meme.png"
+                alt="Trabajando para siempre"
+                className="w-48 h-48 mx-auto mb-6 rounded-full object-cover"
+              />
+              <h2 className="text-2xl font-bold mb-4 text-gray-900">
+                Buena suerte con eso. Te esperamos cuando estés listo
+              </h2>
+              <Button
+                onClick={() => setShowNoOption(false)}
+                className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors"
+              >
+                Volver
+              </Button>
+            </div>
+          </Card>
+        )}
       </div>
-    </div>
+    </section>
   )
 }

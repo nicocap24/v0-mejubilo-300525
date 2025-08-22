@@ -10,7 +10,7 @@ export function Header() {
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
             <span className="text-2xl font-bold">
-              <span className="text-gray-700">Me</span>
+              <span className="text-gray-700">Me </span>
               <span className="text-orange-500">Jubilo</span>
             </span>
           </Link>

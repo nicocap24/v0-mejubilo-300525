@@ -19,11 +19,8 @@ export function useFormSubmission() {
     setState({ isSubmitting: true, error: null, success: false })
 
     try {
-      // Simulate API call
+      // Simular envío de formulario
       await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      // Here you would make the actual API call
-      console.log("Form submitted:", formData)
 
       setState({ isSubmitting: false, error: null, success: true })
       return { success: true }

@@ -1,35 +1,31 @@
 export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat("es-CL", {
-    style: "decimal",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(amount)
 }
 
-export function parseCurrency(value: string): number {
-  const cleanValue = value.replace(/[^\d]/g, "")
-  return Number.parseInt(cleanValue) || 0
-}
-
 export function formatCurrencyInput(value: string): string {
-  const numericValue = parseCurrency(value)
-  return formatCurrency(numericValue)
+  const numericValue = value.replace(/[^\d]/g, "")
+  if (!numericValue) return ""
+  return formatCurrency(Number.parseInt(numericValue))
 }
 
 export function formatDateInput(value: string): string {
-  // Remove all non-numeric characters
   const cleaned = value.replace(/\D/g, "")
+  const match = cleaned.match(/^(\d{0,2})(\d{0,2})(\d{0,4})$/)
+  if (!match) return value
 
-  // Apply DD/MM/YYYY format
-  if (cleaned.length >= 8) {
-    return `${cleaned.slice(0, 2)}/${cleaned.slice(2, 4)}/${cleaned.slice(4, 8)}`
-  } else if (cleaned.length >= 4) {
-    return `${cleaned.slice(0, 2)}/${cleaned.slice(2, 4)}/${cleaned.slice(4)}`
-  } else if (cleaned.length >= 2) {
-    return `${cleaned.slice(0, 2)}/${cleaned.slice(2)}`
-  }
+  let formatted = ""
+  if (match[1]) formatted += match[1]
+  if (match[2]) formatted += "/" + match[2]
+  if (match[3]) formatted += "/" + match[3]
 
-  return cleaned
+  return formatted
+}
+
+export function parseCurrency(value: string): number {
+  return Number.parseInt(value.replace(/[^\d]/g, "")) || 0
 }
 
 export function calculateAge(birthDate: string): number {

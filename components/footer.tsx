@@ -11,7 +11,7 @@ export function Footer() {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
               <span className="text-2xl font-bold">
-                <span className="text-gray-300">Me</span>
+                <span className="text-gray-300">Me </span>
                 <span className="text-orange-500">Jubilo</span>
               </span>
             </div>
@@ -30,28 +30,47 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Productos */}
+          {/* Herramientas Gratuitas */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Productos</h3>
+            <h3 className="text-lg font-semibold mb-4">Herramientas Gratuitas</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/evaluar" className="text-gray-400 hover:text-white transition-colors">
-                  Simulador de Pensiones
-                </Link>
-              </li>
-              <li>
-                <Link href="/invest" className="text-gray-400 hover:text-white transition-colors">
-                  Invest
-                </Link>
-              </li>
-              <li>
-                <Link href="/publicita-con-nosotros" className="text-gray-400 hover:text-white transition-colors">
-                  Publicita con nosotros
+                  Simulador reforma 2025
                 </Link>
               </li>
               <li>
                 <Link href="/ranking-afps" className="text-gray-400 hover:text-white transition-colors">
-                  Ranking AFPs
+                  Comparador AFP
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" className="text-gray-400 hover:text-white transition-colors">
+                  Biblioteca previsional
+                </Link>
+              </li>
+            </ul>
+
+            <h3 className="text-lg font-semibold mb-4 mt-6">Productos Pagados</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/recomendacion-fondo" className="text-gray-400 hover:text-white transition-colors">
+                  Recomendación de fondo
+                </Link>
+              </li>
+              <li>
+                <Link href="/recomendacion-afp" className="text-gray-400 hover:text-white transition-colors">
+                  Recomendación de AFP
+                </Link>
+              </li>
+              <li>
+                <Link href="/recomendacion-apv" className="text-gray-400 hover:text-white transition-colors">
+                  Recomendación de APV
+                </Link>
+              </li>
+              <li>
+                <Link href="/rentas-vitalicias" className="text-gray-400 hover:text-white transition-colors">
+                  Rentas vitalicias
                 </Link>
               </li>
             </ul>
@@ -62,8 +81,8 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4">Empresa</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/acerca-de" className="text-gray-400 hover:text-white transition-colors">
-                  Acerca de
+                <Link href="/quien-soy" className="text-gray-400 hover:text-white transition-colors">
+                  Quien soy
                 </Link>
               </li>
               <li>
@@ -72,13 +91,18 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="text-gray-400 hover:text-white transition-colors">
-                  Blog
+                <Link href="/contacto" className="text-gray-400 hover:text-white transition-colors">
+                  Contacto
                 </Link>
               </li>
               <li>
-                <Link href="/contacto" className="text-gray-400 hover:text-white transition-colors">
-                  Contacto
+                <Link href="/politica-de-privacidad" className="text-gray-400 hover:text-white transition-colors">
+                  Política de Privacidad
+                </Link>
+              </li>
+              <li>
+                <Link href="/terminos-y-condiciones" className="text-gray-400 hover:text-white transition-colors">
+                  Términos y Condiciones
                 </Link>
               </li>
             </ul>

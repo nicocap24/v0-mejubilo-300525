@@ -26,7 +26,7 @@ const config: Config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#f97316",
+          DEFAULT: "#f97316", // orange-500
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
