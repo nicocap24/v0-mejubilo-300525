@@ -1,14 +1,9 @@
 export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat("es-CL", {
-    style: "currency",
-    currency: "CLP",
+    style: "decimal",
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(amount)
-}
-
-export function formatNumber(num: number): string {
-  return new Intl.NumberFormat("es-CL").format(num)
 }
 
 export function parseCurrency(value: string): number {
@@ -18,27 +13,29 @@ export function parseCurrency(value: string): number {
 
 export function formatCurrencyInput(value: string): string {
   const numericValue = parseCurrency(value)
-  if (numericValue === 0) return ""
-  return formatNumber(numericValue)
+  return formatCurrency(numericValue)
 }
 
 export function formatDateInput(value: string): string {
   // Remove all non-numeric characters
-  const numbers = value.replace(/\D/g, "")
+  const cleaned = value.replace(/\D/g, "")
 
-  // Format as DD/MM/YYYY
-  if (numbers.length <= 2) {
-    return numbers
-  } else if (numbers.length <= 4) {
-    return `${numbers.slice(0, 2)}/${numbers.slice(2)}`
-  } else {
-    return `${numbers.slice(0, 2)}/${numbers.slice(2, 4)}/${numbers.slice(4, 8)}`
+  // Apply DD/MM/YYYY format
+  if (cleaned.length >= 8) {
+    return `${cleaned.slice(0, 2)}/${cleaned.slice(2, 4)}/${cleaned.slice(4, 8)}`
+  } else if (cleaned.length >= 4) {
+    return `${cleaned.slice(0, 2)}/${cleaned.slice(2, 4)}/${cleaned.slice(4)}`
+  } else if (cleaned.length >= 2) {
+    return `${cleaned.slice(0, 2)}/${cleaned.slice(2)}`
   }
+
+  return cleaned
 }
 
 export function calculateAge(birthDate: string): number {
+  const [day, month, year] = birthDate.split("/").map(Number)
+  const birth = new Date(year, month - 1, day)
   const today = new Date()
-  const birth = new Date(birthDate)
   let age = today.getFullYear() - birth.getFullYear()
   const monthDiff = today.getMonth() - birth.getMonth()
 
@@ -57,9 +54,9 @@ export function isValidDate(dateString: string): boolean {
   const date = new Date(year, month - 1, day)
 
   return (
-    date.getFullYear() === year &&
-    date.getMonth() === month - 1 &&
     date.getDate() === day &&
+    date.getMonth() === month - 1 &&
+    date.getFullYear() === year &&
     year >= 1900 &&
     year <= new Date().getFullYear()
   )

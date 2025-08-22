@@ -1,71 +1,52 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
-import { useState } from "react"
 import Image from "next/image"
 
 export function HeroSection() {
-  const [showWorkingForever, setShowWorkingForever] = useState(false)
-
-  if (showWorkingForever) {
-    return (
-      <div
-        className="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center"
-        style={{
-          backgroundImage: "url('/images/new-landscape-background.png')",
-        }}
-      >
-        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md mx-4 text-center">
-          <div className="mb-6">
-            <Image
-              src="/images/working-forever-meme.png"
-              alt="Working forever meme"
-              width={200}
-              height={200}
-              className="mx-auto rounded-full"
-            />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Buena suerte con eso.</h2>
-          <p className="text-gray-600 mb-6">Te esperamos cuando estés listo</p>
-          <button
-            onClick={() => setShowWorkingForever(false)}
-            className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-          >
-            Volver
-          </button>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div
-      className="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center"
-      style={{
-        backgroundImage: "url('/images/new-landscape-background.png')",
-      }}
-    >
-      <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md mx-4 text-center">
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">
-          Ya te quieres <span className="text-orange-500">jubilar</span> ?
-        </h1>
-        <p className="text-2xl mb-8">👇</p>
+    <div className="relative min-h-screen flex items-center justify-center">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/new-landscape-background.png"
+          alt="Paisaje de colinas verdes"
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
 
-        <div className="space-y-4">
-          <Link
-            href="/simulador-simple"
-            className="block w-full bg-orange-500 hover:bg-orange-600 text-white py-4 px-6 rounded-lg text-xl font-bold transition-colors"
-          >
-            Si 😎
-          </Link>
+      {/* Content */}
+      <div className="relative z-10 w-full max-w-2xl mx-auto px-4">
+        <Card className="bg-white/95 backdrop-blur-sm shadow-2xl border-0">
+          <CardContent className="p-8 text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Y si Me <span className="text-orange-500">Jubilo</span>?
+            </h1>
 
-          <button
-            onClick={() => setShowWorkingForever(true)}
-            className="block w-full bg-gray-500 hover:bg-gray-600 text-white py-4 px-6 rounded-lg text-xl font-bold transition-colors"
-          >
-            No todavía 😒
-          </button>
-        </div>
+            <p className="text-xl text-gray-600 mb-8">Ya te quieres jubilar ? 👇</p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/simulador-simple" className="flex-1">
+                <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white text-xl py-4 px-8 rounded-lg font-bold transition-colors">
+                  Si 😎
+                </Button>
+              </Link>
+
+              <Link href="/no-todavia" className="flex-1">
+                <Button
+                  variant="outline"
+                  className="w-full border-gray-300 text-gray-700 hover:bg-gray-50 text-xl py-4 px-8 rounded-lg font-bold transition-colors bg-transparent"
+                >
+                  No todavía 😒
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

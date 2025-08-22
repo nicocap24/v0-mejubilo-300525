@@ -2,25 +2,28 @@
 
 import { useState } from "react"
 
-interface SubmissionState {
+interface FormSubmissionState {
   isSubmitting: boolean
   error: string | null
   success: boolean
 }
 
 export function useFormSubmission() {
-  const [state, setState] = useState<SubmissionState>({
+  const [state, setState] = useState<FormSubmissionState>({
     isSubmitting: false,
     error: null,
     success: false,
   })
 
-  const submitForm = async (data: any) => {
+  const submitForm = async (formData: any) => {
     setState({ isSubmitting: true, error: null, success: false })
 
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000))
+
+      // Here you would make the actual API call
+      console.log("Form submitted:", formData)
 
       setState({ isSubmitting: false, error: null, success: true })
       return { success: true }
@@ -34,13 +37,13 @@ export function useFormSubmission() {
     }
   }
 
-  const reset = () => {
+  const resetState = () => {
     setState({ isSubmitting: false, error: null, success: false })
   }
 
   return {
     ...state,
     submitForm,
-    reset,
+    resetState,
   }
 }
